@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Writing Sprints</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --tan:    #e8d9b8;
+    --tan2:   #d4c49a;
+    --cream:  #fdf6e3;
+    --orange: #e07b2a;
+    --orange2:#c96a18;
+    --brown:  #8b4513;
+    --dark:   #3a2210;
+    --s1:     #e07b2a;
+    --s2:     #b85c1a;
+    --s3:     #d4922a;
+    --s4:     #7a9e4a;
+    --s5:     #4a7a9e;
+    --bg:     #f5ead0;
+    --card:   #fdf6e3;
+    --border: #c8ad7a;
+    --muted:  #9a8060;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--bg);
+    background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23c8ad7a' fill-opacity='0.08'%3E%3Cpath d='M0 0h80v80H0z'/%3E%3Cpath fill='none' stroke='%23c8ad7a' stroke-opacity='0.15' d='M0 40h80M40 0v80'/%3E%3C/g%3E%3C/svg%3E");
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ─────────────────────────────────── */
+  header {
+    background: var(--tan);
+    border-bottom: 2px solid var(--border);
+    padding: 18px 24px 14px;
+    text-align: center;
+    position: relative;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 5vw, 36px);
+    color: var(--dark);
+    letter-spacing: 0.04em;
+  }
+  header p { font-size: 12px; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 3px; }
+  .host-badge {
+    display: none;
+    position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+    background: var(--orange); color: white; font-size: 11px; font-weight: 700;
+    padding: 4px 10px; border-radius: 20px; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  body.host .host-badge { display: block; }
+
+  /* ── TIMER HERO ──────────────────────────────── */
+  .timer-hero {
+    background: var(--tan);
+    border-bottom: 2px solid var(--border);
+    padding: 28px 20px 22px;
+    text-align: center;
+  }
+  .sprint-label {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(15px, 3vw, 20px);
+    color: var(--brown);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .timer-display {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(64px, 18vw, 110px);
+    font-weight: 900;
+    color: var(--dark);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    transition: color 0.4s;
+  }
+  .timer-display.urgent { color: #c0392b; animation: pulse 0.8s infinite alternate; }
+  @keyframes pulse { from { opacity: 1; } to { opacity: 0.6; } }
+  .timer-status { font-size: 13px; color: var(--muted); margin-top: 8px; min-height: 20px; letter-spacing: 0.05em; }
+
+  /* ── HOST TIMER CONTROLS ─────────────────────── */
+  .host-controls {
+    display: none;
+    background: #fef9ee;
+    border: 1.5px dashed var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 16px auto;
+    max-width: 540px;
+    gap: 12px;
+    flex-direction: column;
+    align-items: center;
+  }
+  body.host .host-controls { display: flex; }
+  .host-controls-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; }
+  .host-label { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); width: 100%; text-align: center; }
+  .duration-btn {
+    background: white; border: 1.5px solid var(--border); color: var(--dark);
+    padding: 6px 14px; border-radius: 20px; font-family: inherit; font-size: 13px;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .duration-btn.active, .duration-btn:hover { background: var(--orange); border-color: var(--orange); color: white; }
+  .big-btn {
+    font-family: 'Lato', sans-serif; font-weight: 700; font-size: 15px;
+    padding: 11px 28px; border-radius: 8px; border: none; cursor: pointer;
+    letter-spacing: 0.05em; transition: all 0.15s; text-transform: uppercase;
+  }
+  .btn-start { background: var(--orange); color: white; }
+  .btn-start:hover { background: var(--orange2); }
+  .btn-end { background: var(--brown); color: white; }
+  .btn-end:hover { background: #6b3410; }
+  .btn-next { background: #4a7a3a; color: white; }
+  .btn-next:hover { background: #3a6030; }
+  .btn-reset { background: #888; color: white; font-size: 12px; padding: 8px 16px; }
+  .btn-reset:hover { background: #666; }
+
+  /* ── MAIN LAYOUT ─────────────────────────────── */
+  .main { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  /* ── SPRINT CARDS ROW ────────────────────────── */
+  .sprints-row {
+    display: flex; gap: 10px; overflow-x: auto;
+    padding-bottom: 6px; margin-bottom: 24px;
+    scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+  }
+  .sprint-card {
+    flex: 0 0 auto; min-width: 140px; max-width: 180px;
+    border-radius: 12px; padding: 14px 14px 12px;
+    border: 2px solid transparent; position: relative;
+    transition: all 0.2s;
+  }
+  .sprint-card.past   { background: var(--s1); border-color: var(--s2); color: white; }
+  .sprint-card.past:nth-child(2) { background: var(--s2); }
+  .sprint-card.past:nth-child(3) { background: var(--s3); }
+  .sprint-card.past:nth-child(4) { background: var(--s4); }
+  .sprint-card.active { background: #fff8ee; border-color: var(--orange); box-shadow: 0 2px 16px rgba(224,123,42,0.25); }
+  .sprint-card.future { background: #e8e0cc; border-color: #c0b090; opacity: 0.6; }
+  .sprint-card-title  { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+  .sprint-card.past .sprint-card-title { color: rgba(255,255,255,0.85); }
+  .sprint-card.active .sprint-card-title { color: var(--brown); }
+  .sprint-card.future .sprint-card-title { color: var(--muted); }
+  .sprint-card.future .future-msg { font-size: 11px; color: var(--muted); font-style: italic; }
+  .wc-row { display: flex; gap: 6px; align-items: center; }
+  .wc-box {
+    flex: 1; background: white; border-radius: 6px; padding: 6px 8px;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  .wc-box label { display: block; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 2px; }
+  .sprint-card.past .wc-box label { color: rgba(0,0,0,0.4); }
+  .wc-box input {
+    width: 100%; border: none; outline: none; font-family: 'Lato', sans-serif; font-size: 14px;
+    font-weight: 700; color: var(--dark); background: transparent; padding: 0;
+  }
+  .wc-box input::placeholder { color: #bbb; font-weight: 400; }
+  .wc-arrow { font-size: 16px; color: rgba(255,255,255,0.6); }
+  .sprint-card.active .wc-arrow { color: var(--border); }
+  .sprint-card.future .wc-arrow { color: #bbb; }
+  .sprint-words-written { font-size: 11px; margin-top: 8px; font-weight: 700; color: rgba(255,255,255,0.9); }
+  .sprint-card.active .sprint-words-written { color: var(--orange); }
+
+  /* ── WELCOME / INTAKE ────────────────────────── */
+  .intake-card {
+    background: var(--card); border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 24px; margin-bottom: 24px;
+  }
+  .intake-card h2 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--dark); margin-bottom: 16px; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+  .field input {
+    width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px;
+    font-family: 'Lato', sans-serif; font-size: 15px; color: var(--dark); background: white; outline: none;
+    transition: border-color 0.15s;
+  }
+  .field input:focus { border-color: var(--orange); }
+
+  /* icon picker */
+  .icon-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+  .icon-btn {
+    width: 52px; height: 52px; border-radius: 50%; border: 2.5px solid var(--border);
+    background: white; font-size: 26px; cursor: pointer; display: flex; align-items: center;
+    justify-content: center; transition: all 0.15s; position: relative;
+  }
+  .icon-btn:hover { border-color: var(--orange); transform: scale(1.08); }
+  .icon-btn.selected { border-color: var(--orange); background: #fff3e0; box-shadow: 0 0 0 3px rgba(224,123,42,0.2); }
+  .icon-btn.taken { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+  .icon-btn.taken::after { content: '✕'; position: absolute; font-size: 14px; color: #c0392b; }
+
+  .save-btn {
+    width: 100%; padding: 13px; background: var(--orange); color: white; border: none;
+    border-radius: 8px; font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700;
+    cursor: pointer; letter-spacing: 0.06em; transition: background 0.15s; margin-top: 4px;
+  }
+  .save-btn:hover { background: var(--orange2); }
+  .profile-bar {
+    display: none; align-items: center; gap: 12px;
+    background: var(--card); border: 1.5px solid var(--border); border-radius: 12px;
+    padding: 12px 16px; margin-bottom: 20px;
+  }
+  .profile-bar.visible { display: flex; }
+  .profile-icon { font-size: 32px; }
+  .profile-info { flex: 1; }
+  .profile-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; }
+  .profile-goal { font-size: 12px; color: var(--muted); }
+  .edit-link { font-size: 12px; color: var(--orange); cursor: pointer; text-decoration: underline; }
+
+  /* ── LEADERBOARD ─────────────────────────────── */
+  .leaderboard-card {
+    background: var(--card); border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 22px 20px; margin-bottom: 24px;
+  }
+  .lb-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; }
+  .lb-header h2 { font-family: 'Playfair Display', serif; font-size: 22px; }
+  .lb-header span { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  .lb-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .lb-icon { font-size: 28px; width: 36px; text-align: center; }
+  .lb-name { font-weight: 700; font-size: 14px; min-width: 80px; }
+  .lb-bar-wrap { flex: 1; height: 26px; background: #ede4cf; border-radius: 6px; overflow: hidden; display: flex; }
+  .lb-segment { height: 100%; transition: width 0.6s ease; min-width: 0; }
+  .lb-segment:first-child { border-radius: 6px 0 0 6px; }
+  .lb-segment:last-child:not(:first-child) { border-radius: 0 6px 6px 0; }
+  .lb-segment:only-child { border-radius: 6px; }
+  .lb-total { font-weight: 700; font-size: 14px; min-width: 48px; text-align: right; }
+  .lb-star { font-size: 18px; min-width: 22px; }
+
+  /* host leaderboard input section */
+  .host-lb-section {
+    display: none;
+    background: #fef9ee; border: 1.5px dashed var(--border);
+    border-radius: 12px; padding: 16px; margin-bottom: 20px;
+  }
+  body.host .host-lb-section { display: block; }
+  .host-lb-section h3 { font-family: 'Playfair Display', serif; font-size: 15px; margin-bottom: 12px; color: var(--brown); }
+  .host-writer-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+  .host-writer-row .icon-sm { font-size: 20px; width: 28px; text-align: center; }
+  .host-writer-name { font-weight: 700; font-size: 13px; min-width: 90px; }
+  .host-wc-input {
+    width: 90px; padding: 6px 10px; border: 1.5px solid var(--border); border-radius: 6px;
+    font-family: 'Lato', sans-serif; font-size: 14px; color: var(--dark); background: white; outline: none;
+  }
+  .host-wc-input:focus { border-color: var(--orange); }
+  .host-wc-label { font-size: 11px; color: var(--muted); }
+  .update-lb-btn {
+    background: var(--brown); color: white; border: none; border-radius: 7px;
+    padding: 9px 20px; font-family: inherit; font-weight: 700; font-size: 13px;
+    cursor: pointer; letter-spacing: 0.05em; margin-top: 10px;
+  }
+  .update-lb-btn:hover { background: #6b3410; }
+  .add-writer-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+  .small-input {
+    padding: 7px 11px; border: 1.5px solid var(--border); border-radius: 6px;
+    font-family: 'Lato', sans-serif; font-size: 13px; color: var(--dark); background: white; outline: none;
+  }
+  .add-btn {
+    background: var(--orange); color: white; border: none; border-radius: 6px;
+    padding: 7px 16px; font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer;
+  }
+  .remove-btn {
+    background: none; border: none; color: #c0392b; font-size: 16px; cursor: pointer;
+    padding: 0 4px; line-height: 1;
+  }
+
+  /* ── CONFETTI ─────────────────────────────────── */
+  #confetti-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; }
+
+  /* ── TOAST ────────────────────────────────────── */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--dark); color: var(--cream); padding: 12px 24px; border-radius: 30px;
+    font-size: 14px; font-weight: 700; letter-spacing: 0.05em;
+    transition: transform 0.35s cubic-bezier(.34,1.56,.64,1); z-index: 1000; white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ── RESPONSIVE ───────────────────────────────── */
+  @media (max-width: 480px) {
+    .sprint-card { min-width: 120px; }
+    .lb-name { min-width: 60px; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+<div class="toast" id="toast"></div>
+
+<header>
+  <h1>✍ Writing Sprints</h1>
+  <p>Write together · Sprint harder</p>
+  <span class="host-badge">HOST</span>
+</header>
+
+<!-- Timer hero -->
+<div class="timer-hero">
+  <div class="sprint-label" id="sprint-label">WELCOME TO SPRINTS</div>
+  <div class="timer-display" id="timer-display">00:00</div>
+  <div class="timer-status" id="timer-status">Waiting to begin…</div>
+
+  <!-- HOST CONTROLS -->
+  <div class="host-controls" id="host-controls">
+    <div class="host-label">Sprint Duration</div>
+    <div class="host-controls-row" id="duration-row">
+      <button class="duration-btn" onclick="setDuration(15)">15 min</button>
+      <button class="duration-btn active" onclick="setDuration(20)">20 min</button>
+      <button class="duration-btn" onclick="setDuration(25)">25 min</button>
+      <button class="duration-btn" onclick="setDuration(30)">30 min</button>
+      <button class="duration-btn" onclick="setDuration(40)">40 min</button>
+    </div>
+    <div class="host-controls-row" id="action-row">
+      <button class="big-btn btn-start" id="btn-start" onclick="hostStart()">▶ Start Sprint</button>
+      <button class="big-btn btn-end"   id="btn-end"   onclick="hostEnd()"   style="display:none">⏹ End Sprint</button>
+      <button class="big-btn btn-next"  id="btn-next"  onclick="hostNext()"  style="display:none">→ Next Sprint</button>
+      <button class="big-btn btn-reset" id="btn-reset" onclick="hostReset()" style="display:none">↺ Reset All</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- Profile bar (after intake saved) -->
+  <div class="profile-bar" id="profile-bar">
+    <div class="profile-icon" id="profile-icon-display">🦔</div>
+    <div class="profile-info">
+      <div class="profile-name" id="profile-name-display"></div>
+      <div class="profile-goal" id="profile-goal-display"></div>
+    </div>
+    <span class="edit-link" onclick="editProfile()">Edit</span>
+  </div>
+
+  <!-- Intake card -->
+  <div class="intake-card" id="intake-card">
+    <h2>Welcome! Set yourself up.</h2>
+    <div class="field">
+      <label>Your Name</label>
+      <input type="text" id="input-name" placeholder="e.g. Morgan"/>
+    </div>
+    <div class="field">
+      <label>Today's Word Count Goal</label>
+      <input type="number" id="input-goal" placeholder="e.g. 2000"/>
+    </div>
+    <div class="field">
+      <label>Choose Your Icon</label>
+      <div class="icon-grid" id="icon-grid"></div>
+    </div>
+    <button class="save-btn" onclick="saveProfile()">Let's Sprint! →</button>
+    <p id="intake-error" style="color:#c0392b;font-size:13px;margin-top:8px;display:none"></p>
+  </div>
+
+  <!-- Sprint cards -->
+  <div class="sprints-row" id="sprints-row"></div>
+
+  <!-- HOST: Leaderboard data entry -->
+  <div class="host-lb-section" id="host-lb-section">
+    <h3>📋 Enter Participants' Word Counts</h3>
+    <div id="host-writer-list"></div>
+    <button class="update-lb-btn" onclick="updateLeaderboard()">Update Leaderboard</button>
+    <div class="add-writer-row" style="margin-top:14px; border-top:1px solid var(--border); padding-top:12px;">
+      <span style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);">Add writer:</span>
+      <select id="add-icon-select" class="small-input" style="width:70px; font-size:20px;">
+      </select>
+      <input type="text" class="small-input" id="add-name" placeholder="Name" style="width:110px"/>
+      <button class="add-btn" onclick="hostAddWriter()">+ Add</button>
+    </div>
+  </div>
+
+  <!-- Leaderboard -->
+  <div class="leaderboard-card" id="leaderboard-card">
+    <div class="lb-header">
+      <h2>Leaderboard</h2>
+      <span id="lb-sprint-label">No sprints yet</span>
+    </div>
+    <div id="leaderboard-rows"></div>
+    <p id="lb-empty" style="color:var(--muted);font-size:14px;font-style:italic;text-align:center;padding:10px 0">
+      Complete a sprint to see results here.
+    </p>
+  </div>
+</div>
+
+<script>
+// ── STATE ────────────────────────────────────────────────────────────
+const ICONS = ['🦔','🐺','🦡','🦝','🐰','🦊','🐻','🦌','🐿️','🦦'];
+const SPRINT_COLORS = ['#e07b2a','#b85c1a','#d4922a','#7a9e4a','#4a7a9e'];
+
+let state = {
+  duration: 20,       // minutes
+  currentSprint: 0,   // 0 = not started, 1-5
+  timerRunning: false,
+  timerEnd: null,
+  timerInterval: null,
+  sprints: [],        // [{start, end, wordsWritten}] per sprint, per writer
+  writers: [],        // [{id, name, icon, goal, sprints:[{start,end}]}]
+  myId: null,
+  maxSprints: 5,
+};
+
+const isHost = new URLSearchParams(location.search).has('host');
+if (isHost) document.body.classList.add('host');
+
+// ── INIT ──────────────────────────────────────────────────────────────
+window.onload = () => {
+  renderIconGrid();
+  renderIconSelect();
+  loadProfile();
+  renderSprintCards();
+  renderLeaderboard();
+  updateHostWriterList();
+};
+
+// ── ICONS ─────────────────────────────────────────────────────────────
+function renderIconGrid() {
+  const grid = document.getElementById('icon-grid');
+  grid.innerHTML = '';
+  ICONS.forEach(icon => {
+    const btn = document.createElement('button');
+    btn.className = 'icon-btn';
+    btn.textContent = icon;
+    btn.dataset.icon = icon;
+    const taken = state.writers.some(w => w.icon === icon && w.id !== state.myId);
+    if (taken) btn.classList.add('taken');
+    btn.onclick = () => {
+      document.querySelectorAll('.icon-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    };
+    grid.appendChild(btn);
+  });
+}
+
+function renderIconSelect() {
+  const sel = document.getElementById('add-icon-select');
+  sel.innerHTML = '';
+  ICONS.forEach(icon => {
+    const opt = document.createElement('option');
+    opt.value = icon; opt.textContent = icon;
+    sel.appendChild(opt);
+  });
+}
+
+// ── PROFILE ───────────────────────────────────────────────────────────
+function saveProfile() {
+  const name = document.getElementById('input-name').value.trim();
+  const goal = parseInt(document.getElementById('input-goal').value) || 0;
+  const iconBtn = document.querySelector('.icon-btn.selected');
+  const err = document.getElementById('intake-error');
+  if (!name) { err.textContent = 'Please enter your name.'; err.style.display='block'; return; }
+  if (!iconBtn) { err.textContent = 'Please choose an icon.'; err.style.display='block'; return; }
+  err.style.display = 'none';
+  const icon = iconBtn.dataset.icon;
+  const id = state.myId || Date.now().toString(36);
+  state.myId = id;
+  const existing = state.writers.find(w => w.id === id);
+  if (existing) { existing.name = name; existing.icon = icon; existing.goal = goal; }
+  else state.writers.push({ id, name, icon, goal, sprints: [] });
+  showProfile(name, icon, goal);
+  renderSprintCards();
+  renderLeaderboard();
+  updateHostWriterList();
+}
+
+function loadProfile() {
+  // Nothing persisted — fresh each session
+}
+
+function showProfile(name, icon, goal) {
+  document.getElementById('intake-card').style.display = 'none';
+  const bar = document.getElementById('profile-bar');
+  bar.classList.add('visible');
+  document.getElementById('profile-icon-display').textContent = icon;
+  document.getElementById('profile-name-display').textContent = name;
+  document.getElementById('profile-goal-display').textContent =
+    goal ? `Daily goal: ${goal.toLocaleString()} words` : 'No daily goal set';
+}
+
+function editProfile() {
+  document.getElementById('intake-card').style.display = 'block';
+  document.getElementById('profile-bar').classList.remove('visible');
+  const me = state.writers.find(w => w.id === state.myId);
+  if (me) {
+    document.getElementById('input-name').value = me.name;
+    document.getElementById('input-goal').value = me.goal || '';
+    renderIconGrid();
+    const btn = [...document.querySelectorAll('.icon-btn')].find(b => b.dataset.icon === me.icon);
+    if (btn) btn.classList.add('selected');
+  }
+}
+
+// ── SPRINT CARDS ──────────────────────────────────────────────────────
+function renderSprintCards() {
+  const row = document.getElementById('sprints-row');
+  row.innerHTML = '';
+  const me = state.writers.find(w => w.id === state.myId);
+
+  for (let i = 1; i <= state.maxSprints; i++) {
+    const card = document.createElement('div');
+    card.className = 'sprint-card';
+    const sprintData = me ? (me.sprints[i-1] || {}) : {};
+
+    if (i < state.currentSprint) {
+      card.classList.add('past');
+      card.style.background = SPRINT_COLORS[i-1];
+      const written = (sprintData.end || 0) - (sprintData.start || 0);
+      card.innerHTML = `
+        <div class="sprint-card-title">Sprint #${i}</div>
+        <div class="wc-row">
+          <div class="wc-box">
+            <label>Start</label>
+            <input type="number" value="${sprintData.start || ''}" placeholder="—"
+              onchange="updateMyCount(${i}, 'start', this.value)"/>
+          </div>
+          <span class="wc-arrow">→</span>
+          <div class="wc-box">
+            <label>End</label>
+            <input type="number" value="${sprintData.end || ''}" placeholder="—"
+              onchange="updateMyCount(${i}, 'end', this.value)"/>
+          </div>
+        </div>
+        ${written > 0 ? `<div class="sprint-words-written">+${written.toLocaleString()} words</div>` : ''}
+      `;
+    } else if (i === state.currentSprint) {
+      card.classList.add('active');
+      card.innerHTML = `
+        <div class="sprint-card-title">Sprint #${i} ← Active</div>
+        <div class="wc-row">
+          <div class="wc-box">
+            <label>Start</label>
+            <input type="number" value="${sprintData.start || ''}" placeholder="Words"
+              onchange="updateMyCount(${i}, 'start', this.value)"/>
+          </div>
+          <span class="wc-arrow">→</span>
+          <div class="wc-box">
+            <label>End</label>
+            <input type="number" value="${sprintData.end || ''}" placeholder="Words"
+              onchange="updateMyCount(${i}, 'end', this.value)"/>
+          </div>
+        </div>
+      `;
+    } else {
+      card.classList.add('future');
+      card.innerHTML = `
+        <div class="sprint-card-title">Sprint #${i}</div>
+        <div class="future-msg">This sprint has not yet begun.</div>
+      `;
+    }
+    row.appendChild(card);
+  }
+}
+
+function updateMyCount(sprintNum, field, val) {
+  const me = state.writers.find(w => w.id === state.myId);
+  if (!me) return;
+  while (me.sprints.length < sprintNum) me.sprints.push({});
+  me.sprints[sprintNum - 1][field] = parseInt(val) || 0;
+  // re-render leaderboard if host changed this
+  if (isHost) { renderLeaderboard(); }
+}
+
+// ── HOST TIMER CONTROLS ───────────────────────────────────────────────
+function setDuration(mins) {
+  state.duration = mins;
+  document.querySelectorAll('.duration-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.textContent) === mins);
+  });
+  if (!state.timerRunning) setTimerDisplay(mins * 60);
+}
+
+function setTimerDisplay(secs) {
+  const m = String(Math.floor(secs / 60)).padStart(2,'0');
+  const s = String(secs % 60).padStart(2,'0');
+  document.getElementById('timer-display').textContent = `${m}:${s}`;
+  document.getElementById('timer-display').classList.toggle('urgent', secs <= 60 && secs > 0);
+}
+
+function hostStart() {
+  if (state.currentSprint >= state.maxSprints) { showToast('All sprints complete!'); return; }
+  state.currentSprint++;
+  state.timerRunning = true;
+  state.timerEnd = Date.now() + state.duration * 60 * 1000;
+
+  document.getElementById('sprint-label').textContent = `SPRINT #${state.currentSprint}`;
+  document.getElementById('timer-status').textContent = `Sprint #${state.currentSprint} is live — write!`;
+  document.getElementById('btn-start').style.display = 'none';
+  document.getElementById('btn-end').style.display = 'inline-block';
+  document.getElementById('duration-row').style.opacity = '0.4';
+  document.getElementById('duration-row').style.pointerEvents = 'none';
+
+  playChime('start');
+
+  state.timerInterval = setInterval(() => {
+    const left = Math.max(0, Math.round((state.timerEnd - Date.now()) / 1000));
+    setTimerDisplay(left);
+    if (left === 0) {
+      clearInterval(state.timerInterval);
+      state.timerRunning = false;
+      document.getElementById('timer-status').textContent = `Sprint #${state.currentSprint} complete! Enter your word counts.`;
+      document.getElementById('btn-end').style.display = 'none';
+      document.getElementById('btn-next').style.display = state.currentSprint < state.maxSprints ? 'inline-block' : 'none';
+      document.getElementById('btn-reset').style.display = 'inline-block';
+      playChime('end');
+      renderSprintCards();
+    }
+  }, 500);
+
+  renderSprintCards();
+}
+
+function hostEnd() {
+  clearInterval(state.timerInterval);
+  state.timerRunning = false;
+  setTimerDisplay(0);
+  document.getElementById('timer-status').textContent = `Sprint #${state.currentSprint} ended. Enter word counts.`;
+  document.getElementById('btn-end').style.display = 'none';
+  document.getElementById('btn-next').style.display = state.currentSprint < state.maxSprints ? 'inline-block' : 'none';
+  document.getElementById('btn-reset').style.display = 'inline-block';
+  playChime('end');
+  renderSprintCards();
+}
+
+function hostNext() {
+  document.getElementById('btn-next').style.display = 'none';
+  document.getElementById('btn-reset').style.display = 'none';
+  document.getElementById('btn-start').style.display = 'inline-block';
+  document.getElementById('duration-row').style.opacity = '';
+  document.getElementById('duration-row').style.pointerEvents = '';
+  setTimerDisplay(state.duration * 60);
+  document.getElementById('timer-status').textContent = 'Ready for next sprint…';
+  document.getElementById('sprint-label').textContent = `SPRINT #${state.currentSprint + 1} — READY`;
+}
+
+function hostReset() {
+  if (!confirm('Reset all sprints and clear the leaderboard?')) return;
+  clearInterval(state.timerInterval);
+  state.currentSprint = 0; state.timerRunning = false; state.timerEnd = null;
+  state.writers.forEach(w => w.sprints = []);
+  document.getElementById('sprint-label').textContent = 'WELCOME TO SPRINTS';
+  document.getElementById('timer-status').textContent = 'Waiting to begin…';
+  document.getElementById('btn-start').style.display = 'inline-block';
+  document.getElementById('btn-end').style.display = 'none';
+  document.getElementById('btn-next').style.display = 'none';
+  document.getElementById('btn-reset').style.display = 'none';
+  document.getElementById('duration-row').style.opacity = '';
+  document.getElementById('duration-row').style.pointerEvents = '';
+  setTimerDisplay(state.duration * 60);
+  renderSprintCards();
+  renderLeaderboard();
+  updateHostWriterList();
+}
+
+// ── HOST LEADERBOARD MANAGEMENT ───────────────────────────────────────
+function updateHostWriterList() {
+  const list = document.getElementById('host-writer-list');
+  list.innerHTML = '';
+  if (state.writers.length === 0) {
+    list.innerHTML = '<p style="font-size:13px;color:var(--muted);font-style:italic">No writers added yet.</p>';
+    return;
+  }
+  state.writers.forEach((w, wi) => {
+    const row = document.createElement('div');
+    row.className = 'host-writer-row';
+    const sprintInputs = Array.from({length: state.maxSprints}, (_, si) => {
+      const s = w.sprints[si] || {};
+      return `
+        <span class="host-wc-label">S${si+1}:</span>
+        <input class="host-wc-input" type="number" placeholder="Start"
+          value="${s.start||''}" data-wi="${wi}" data-si="${si}" data-field="start"
+          onchange="hostUpdateCount(${wi},${si},'start',this.value)" style="width:72px"/>
+        <input class="host-wc-input" type="number" placeholder="End"
+          value="${s.end||''}" data-wi="${wi}" data-si="${si}" data-field="end"
+          onchange="hostUpdateCount(${wi},${si},'end',this.value)" style="width:72px"/>
+      `;
+    }).join('');
+    row.innerHTML = `
+      <span class="icon-sm">${w.icon}</span>
+      <span class="host-writer-name">${w.name}</span>
+      ${sprintInputs}
+      <button class="remove-btn" onclick="removeWriter(${wi})" title="Remove">✕</button>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function hostUpdateCount(wi, si, field, val) {
+  const w = state.writers[wi];
+  while (w.sprints.length <= si) w.sprints.push({});
+  w.sprints[si][field] = parseInt(val) || 0;
+}
+
+function updateLeaderboard() {
+  renderLeaderboard();
+  showToast('Leaderboard updated!');
+  const winner = getTopWriter();
+  if (winner && state.currentSprint >= 1) fireConfetti();
+}
+
+function hostAddWriter() {
+  const icon = document.getElementById('add-icon-select').value;
+  const name = document.getElementById('add-name').value.trim();
+  if (!name) { showToast('Enter a name first.'); return; }
+  state.writers.push({ id: Date.now().toString(36), name, icon, goal: 0, sprints: [] });
+  document.getElementById('add-name').value = '';
+  updateHostWriterList();
+  renderLeaderboard();
+  renderIconGrid();
+}
+
+function removeWriter(wi) {
+  state.writers.splice(wi, 1);
+  updateHostWriterList();
+  renderLeaderboard();
+  renderIconGrid();
+}
+
+// ── LEADERBOARD RENDER ────────────────────────────────────────────────
+function renderLeaderboard() {
+  const container = document.getElementById('leaderboard-rows');
+  const empty = document.getElementById('lb-empty');
+  const label = document.getElementById('lb-sprint-label');
+  container.innerHTML = '';
+
+  const ranked = state.writers.map(w => {
+    const sprintTotals = w.sprints.map(s => Math.max(0, (s.end||0) - (s.start||0)));
+    const total = sprintTotals.reduce((a,b) => a+b, 0);
+    return { ...w, sprintTotals, total };
+  }).filter(w => w.total > 0 || state.writers.length > 0);
+
+  const hasData = ranked.some(w => w.total > 0);
+  empty.style.display = hasData ? 'none' : 'block';
+  if (!hasData && state.writers.length === 0) { label.textContent = 'No sprints yet'; return; }
+
+  const sorted = [...ranked].sort((a,b) => b.total - a.total);
+  const maxTotal = sorted[0]?.total || 1;
+  label.textContent = state.currentSprint > 0 ? `Through Sprint #${state.currentSprint - (state.timerRunning?1:0) || state.currentSprint}` : 'Standings';
+
+  sorted.forEach(w => {
+    if (!isHost && w.total === 0 && !w.sprints.length) return;
+    const row = document.createElement('div');
+    row.className = 'lb-row';
+    const metGoal = w.goal > 0 && w.total >= w.goal;
+
+    const segmentsHTML = w.sprintTotals.map((t, i) => {
+      const pct = maxTotal > 0 ? (t / maxTotal * 100) : 0;
+      return `<div class="lb-segment" style="width:${pct}%;background:${SPRINT_COLORS[i]}" title="Sprint ${i+1}: +${t} words"></div>`;
+    }).join('');
+
+    row.innerHTML = `
+      <div class="lb-icon">${w.icon}</div>
+      <div class="lb-name">${w.name}</div>
+      <div class="lb-bar-wrap">${segmentsHTML || '<div class="lb-segment" style="width:0%"></div>'}</div>
+      <div class="lb-total">${w.total.toLocaleString()}</div>
+      <div class="lb-star">${metGoal ? '⭐' : ''}</div>
+    `;
+    container.appendChild(row);
+  });
+}
+
+function getTopWriter() {
+  const sorted = [...state.writers]
+    .map(w => ({ ...w, total: w.sprints.reduce((a,s) => a + Math.max(0,(s.end||0)-(s.start||0)), 0) }))
+    .sort((a,b) => b.total - a.total);
+  return sorted[0];
+}
+
+// ── SOUND ──────────────────────────────────────────────────────────────
+function playChime(type) {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const notes = type === 'start'
+      ? [{ f:523, t:0 }, { f:659, t:0.12 }, { f:784, t:0.24 }]        // C E G rising
+      : [{ f:784, t:0 }, { f:659, t:0.15 }, { f:523, t:0.3 }, { f:392, t:0.5 }]; // falling
+    notes.forEach(({ f, t }) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sine'; osc.frequency.value = f;
+      gain.gain.setValueAtTime(0.001, ctx.currentTime + t);
+      gain.gain.exponentialRampToValueAtTime(0.35, ctx.currentTime + t + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.5);
+      osc.start(ctx.currentTime + t);
+      osc.stop(ctx.currentTime + t + 0.6);
+    });
+  } catch(e) { /* audio not available */ }
+}
+
+// ── CONFETTI ───────────────────────────────────────────────────────────
+function fireConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+  const colors = ['#e07b2a','#f5d57a','#c96a18','#8bbd5a','#4a9ee0','#fff8e7','#8b4513'];
+  let particles = Array.from({length: 140}, () => ({
+    x: Math.random() * canvas.width, y: -20,
+    w: Math.random()*12+4, h: Math.random()*6+3,
+    color: colors[Math.floor(Math.random()*colors.length)],
+    vx: (Math.random()-0.5)*4, vy: Math.random()*4+2,
+    angle: Math.random()*Math.PI*2, spin: (Math.random()-0.5)*0.15, opacity: 1
+  }));
+  let raf;
+  function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p => {
+      p.x+=p.vx; p.y+=p.vy; p.angle+=p.spin; p.opacity-=0.005;
+      ctx.save(); ctx.globalAlpha=Math.max(0,p.opacity);
+      ctx.translate(p.x,p.y); ctx.rotate(p.angle);
+      ctx.fillStyle=p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+    });
+    particles = particles.filter(p=>p.opacity>0);
+    if (particles.length) raf = requestAnimationFrame(animate);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  cancelAnimationFrame(raf);
+  animate();
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Initial timer display
+setTimerDisplay(20 * 60);
+</script>
+</body>
+</html>
