@@ -92,7 +92,7 @@
     border-radius: 12px;
     padding: 16px 20px;
     margin: 16px auto;
-    max-width: 540px;
+    max-width: 600px;
     gap: 12px;
     flex-direction: column;
     align-items: center;
@@ -121,48 +121,98 @@
   .btn-reset:hover { background: #666; }
 
   /* ── MAIN LAYOUT ─────────────────────────────── */
-  .main { max-width: 900px; margin: 0 auto; padding: 20px 16px 60px; }
+  .main { max-width: 960px; margin: 0 auto; padding: 20px 16px 60px; }
 
-  /* ── SPRINT CARDS ROW ────────────────────────── */
-  .sprints-row {
-    display: flex; gap: 10px; overflow-x: auto;
-    padding-bottom: 6px; margin-bottom: 24px;
-    scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+  /* ── HOST DATA ENTRY SECTION ─────────────────── */
+  .host-lb-section {
+    display: none;
+    background: #fef9ee; border: 1.5px dashed var(--border);
+    border-radius: 12px; padding: 20px; margin-bottom: 20px;
   }
-  .sprint-card {
-    flex: 0 0 auto; min-width: 140px; max-width: 180px;
-    border-radius: 12px; padding: 14px 14px 12px;
-    border: 2px solid transparent; position: relative;
-    transition: all 0.2s;
+  body.host .host-lb-section { display: block; }
+  .host-lb-section h3 {
+    font-family: 'Playfair Display', serif; font-size: 16px;
+    margin-bottom: 14px; color: var(--brown);
   }
-  .sprint-card.past   { background: var(--s1); border-color: var(--s2); color: white; }
-  .sprint-card.past:nth-child(2) { background: var(--s2); }
-  .sprint-card.past:nth-child(3) { background: var(--s3); }
-  .sprint-card.past:nth-child(4) { background: var(--s4); }
-  .sprint-card.active { background: #fff8ee; border-color: var(--orange); box-shadow: 0 2px 16px rgba(224,123,42,0.25); }
-  .sprint-card.future { background: #e8e0cc; border-color: #c0b090; opacity: 0.6; }
-  .sprint-card-title  { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
-  .sprint-card.past .sprint-card-title { color: rgba(255,255,255,0.85); }
-  .sprint-card.active .sprint-card-title { color: var(--brown); }
-  .sprint-card.future .sprint-card-title { color: var(--muted); }
-  .sprint-card.future .future-msg { font-size: 11px; color: var(--muted); font-style: italic; }
-  .wc-row { display: flex; gap: 6px; align-items: center; }
-  .wc-box {
-    flex: 1; background: white; border-radius: 6px; padding: 6px 8px;
-    border: 1px solid rgba(0,0,0,0.1);
+
+  /* scrollable writer grid */
+  .writer-grid { overflow-x: auto; padding-bottom: 6px; }
+
+  /* writer rows */
+  .host-writer-row {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 8px; min-width: max-content;
   }
-  .wc-box label { display: block; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 2px; }
-  .sprint-card.past .wc-box label { color: rgba(0,0,0,0.4); }
-  .wc-box input {
-    width: 100%; border: none; outline: none; font-family: 'Lato', sans-serif; font-size: 14px;
-    font-weight: 700; color: var(--dark); background: transparent; padding: 0;
+  .icon-sm { font-size: 22px; width: 30px; text-align: center; flex-shrink: 0; }
+  .host-writer-name { font-weight: 700; font-size: 13px; width: 90px; flex-shrink: 0; }
+
+  /* sprint column group */
+  .sprint-col { display: flex; flex-direction: column; align-items: center; gap: 3px; flex-shrink: 0; }
+  .sprint-col-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; white-space: nowrap;
   }
-  .wc-box input::placeholder { color: #bbb; font-weight: 400; }
-  .wc-arrow { font-size: 16px; color: rgba(255,255,255,0.6); }
-  .sprint-card.active .wc-arrow { color: var(--border); }
-  .sprint-card.future .wc-arrow { color: #bbb; }
-  .sprint-words-written { font-size: 11px; margin-top: 8px; font-weight: 700; color: rgba(255,255,255,0.9); }
-  .sprint-card.active .sprint-words-written { color: var(--orange); }
+  .sprint-col-inputs { display: flex; gap: 4px; }
+  .host-wc-input {
+    width: 68px; padding: 6px 8px; border: 1.5px solid var(--border); border-radius: 6px;
+    font-family: 'Lato', sans-serif; font-size: 13px; color: var(--dark);
+    background: white; outline: none; text-align: center;
+  }
+  .host-wc-input:focus { border-color: var(--orange); }
+  .host-wc-input.start-input { border-color: #c8c0b0; }
+  .host-wc-input.end-input   { border-color: var(--orange2); }
+
+  .remove-btn {
+    background: none; border: none; color: #c0392b; font-size: 18px; cursor: pointer;
+    padding: 0 2px; line-height: 1; flex-shrink: 0;
+  }
+
+  /* column header row */
+  .grid-header {
+    display: flex; align-items: flex-end; gap: 10px;
+    margin-bottom: 6px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border); min-width: max-content;
+  }
+  .grid-header-name { width: 120px; flex-shrink: 0; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .grid-subheader { display: flex; gap: 4px; }
+  .grid-subheader span { width: 68px; font-size: 10px; color: var(--muted); text-align: center; }
+
+  /* host bottom action row */
+  .host-action-row {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);
+  }
+  .update-lb-btn {
+    background: var(--brown); color: white; border: none; border-radius: 7px;
+    padding: 9px 20px; font-family: inherit; font-weight: 700; font-size: 13px;
+    cursor: pointer; letter-spacing: 0.05em;
+  }
+  .update-lb-btn:hover { background: #6b3410; }
+  .add-sprint-btn {
+    background: #4a7a9e; color: white; border: none; border-radius: 7px;
+    padding: 9px 20px; font-family: inherit; font-weight: 700; font-size: 13px;
+    cursor: pointer; letter-spacing: 0.05em;
+  }
+  .add-sprint-btn:hover { background: #3a6080; }
+
+  /* add writer row */
+  .add-writer-row {
+    display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    margin-top: 10px; padding-top: 12px; border-top: 1px solid var(--border);
+  }
+  .add-writer-label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--muted); }
+  .small-input {
+    padding: 7px 11px; border: 1.5px solid var(--border); border-radius: 6px;
+    font-family: 'Lato', sans-serif; font-size: 13px; color: var(--dark);
+    background: white; outline: none;
+  }
+  .add-btn {
+    background: var(--orange); color: white; border: none; border-radius: 6px;
+    padding: 7px 16px; font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer;
+  }
+  .add-btn:hover { background: var(--orange2); }
 
   /* ── LEADERBOARD ─────────────────────────────── */
   .leaderboard-card {
@@ -173,52 +223,16 @@
   .lb-header h2 { font-family: 'Playfair Display', serif; font-size: 22px; }
   .lb-header span { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
   .lb-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-  .lb-icon { font-size: 28px; width: 36px; text-align: center; }
-  .lb-name { font-weight: 700; font-size: 14px; min-width: 80px; }
-  .lb-bar-wrap { flex: 1; height: 26px; background: #ede4cf; border-radius: 6px; overflow: hidden; display: flex; }
+  .lb-icon { font-size: 28px; width: 36px; text-align: center; flex-shrink: 0; }
+  .lb-name { font-weight: 700; font-size: 14px; min-width: 80px; flex-shrink: 0; }
+  .lb-bar-wrap { flex: 1; height: 28px; background: #ede4cf; border-radius: 6px; overflow: hidden; display: flex; }
   .lb-segment { height: 100%; transition: width 0.6s ease; min-width: 0; }
   .lb-segment:first-child { border-radius: 6px 0 0 6px; }
   .lb-segment:last-child:not(:first-child) { border-radius: 0 6px 6px 0; }
   .lb-segment:only-child { border-radius: 6px; }
-  .lb-total { font-weight: 700; font-size: 14px; min-width: 48px; text-align: right; }
-  .lb-star { font-size: 18px; min-width: 22px; }
-
-  /* host leaderboard input section */
-  .host-lb-section {
-    display: none;
-    background: #fef9ee; border: 1.5px dashed var(--border);
-    border-radius: 12px; padding: 16px; margin-bottom: 20px;
-  }
-  body.host .host-lb-section { display: block; }
-  .host-lb-section h3 { font-family: 'Playfair Display', serif; font-size: 15px; margin-bottom: 12px; color: var(--brown); }
-  .host-writer-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
-  .host-writer-row .icon-sm { font-size: 20px; width: 28px; text-align: center; }
-  .host-writer-name { font-weight: 700; font-size: 13px; min-width: 90px; }
-  .host-wc-input {
-    width: 90px; padding: 6px 10px; border: 1.5px solid var(--border); border-radius: 6px;
-    font-family: 'Lato', sans-serif; font-size: 14px; color: var(--dark); background: white; outline: none;
-  }
-  .host-wc-input:focus { border-color: var(--orange); }
-  .host-wc-label { font-size: 11px; color: var(--muted); }
-  .update-lb-btn {
-    background: var(--brown); color: white; border: none; border-radius: 7px;
-    padding: 9px 20px; font-family: inherit; font-weight: 700; font-size: 13px;
-    cursor: pointer; letter-spacing: 0.05em; margin-top: 10px;
-  }
-  .update-lb-btn:hover { background: #6b3410; }
-  .add-writer-row { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
-  .small-input {
-    padding: 7px 11px; border: 1.5px solid var(--border); border-radius: 6px;
-    font-family: 'Lato', sans-serif; font-size: 13px; color: var(--dark); background: white; outline: none;
-  }
-  .add-btn {
-    background: var(--orange); color: white; border: none; border-radius: 6px;
-    padding: 7px 16px; font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer;
-  }
-  .remove-btn {
-    background: none; border: none; color: #c0392b; font-size: 16px; cursor: pointer;
-    padding: 0 4px; line-height: 1;
-  }
+  .lb-total { font-weight: 700; font-size: 15px; min-width: 52px; text-align: right; flex-shrink: 0; }
+  .lb-star { font-size: 18px; min-width: 22px; flex-shrink: 0; }
+  #lb-empty { color: var(--muted); font-size: 14px; font-style: italic; text-align: center; padding: 10px 0; }
 
   /* ── CONFETTI ─────────────────────────────────── */
   #confetti-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; }
@@ -232,10 +246,9 @@
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
 
-  /* ── RESPONSIVE ───────────────────────────────── */
   @media (max-width: 480px) {
-    .sprint-card { min-width: 120px; }
     .lb-name { min-width: 60px; }
+    .host-writer-name { width: 70px; }
   }
 </style>
 </head>
@@ -253,11 +266,11 @@
 <!-- Timer hero -->
 <div class="timer-hero">
   <div class="sprint-label" id="sprint-label">WELCOME TO SPRINTS</div>
-  <div class="timer-display" id="timer-display">00:00</div>
+  <div class="timer-display" id="timer-display">20:00</div>
   <div class="timer-status" id="timer-status">Waiting to begin…</div>
 
-  <!-- HOST CONTROLS -->
-  <div class="host-controls" id="host-controls">
+  <!-- HOST CONTROLS (only visible on ?host=true) -->
+  <div class="host-controls">
     <div class="host-label">Sprint Duration</div>
     <div class="host-controls-row" id="duration-row">
       <button class="duration-btn" onclick="setDuration(15)">15 min</button>
@@ -266,10 +279,10 @@
       <button class="duration-btn" onclick="setDuration(30)">30 min</button>
       <button class="duration-btn" onclick="setDuration(40)">40 min</button>
     </div>
-    <div class="host-controls-row" id="action-row">
+    <div class="host-controls-row">
       <button class="big-btn btn-start" id="btn-start" onclick="hostStart()">▶ Start Sprint</button>
-      <button class="big-btn btn-end"   id="btn-end"   onclick="hostEnd()"   style="display:none">⏹ End Sprint</button>
-      <button class="big-btn btn-next"  id="btn-next"  onclick="hostNext()"  style="display:none">→ Next Sprint</button>
+      <button class="big-btn btn-end"   id="btn-end"   onclick="hostEnd()"  style="display:none">⏹ End Sprint</button>
+      <button class="big-btn btn-next"  id="btn-next"  onclick="hostNext()" style="display:none">→ Next Sprint</button>
       <button class="big-btn btn-reset" id="btn-reset" onclick="hostReset()" style="display:none">↺ Reset All</button>
     </div>
   </div>
@@ -278,48 +291,54 @@
 <!-- MAIN -->
 <div class="main">
 
-  <!-- HOST: Leaderboard data entry -->
-  <div class="host-lb-section" id="host-lb-section">
-    <h3>📋 Enter Participants' Word Counts</h3>
-    <div id="host-writer-list"></div>
-    <button class="update-lb-btn" onclick="updateLeaderboard()">Update Leaderboard</button>
-    <div class="add-writer-row" style="margin-top:14px; border-top:1px solid var(--border); padding-top:12px;">
-      <span style="font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);">Add writer:</span>
-      <select id="add-icon-select" class="small-input" style="width:70px; font-size:20px;">
-      </select>
-      <input type="text" class="small-input" id="add-name" placeholder="Name" style="width:110px"/>
+  <!-- HOST: Data entry panel (only visible on ?host=true) -->
+  <div class="host-lb-section">
+    <h3>📋 Writers &amp; Word Counts</h3>
+
+    <div class="writer-grid" id="writer-grid">
+      <!-- headers + writer rows rendered by JS -->
+    </div>
+
+    <!-- Bottom actions -->
+    <div class="host-action-row">
+      <button class="update-lb-btn" onclick="updateLeaderboard()">Update Leaderboard</button>
+      <button class="add-sprint-btn" onclick="addSprint()">+ Add Sprint</button>
+    </div>
+
+    <!-- Add a new writer -->
+    <div class="add-writer-row">
+      <span class="add-writer-label">Add writer:</span>
+      <select id="add-icon-select" class="small-input" style="font-size:18px; padding:5px 8px;"></select>
+      <input type="text" class="small-input" id="add-name" placeholder="Name" style="width:120px"/>
       <button class="add-btn" onclick="hostAddWriter()">+ Add</button>
     </div>
   </div>
 
-  <!-- Leaderboard -->
-  <div class="leaderboard-card" id="leaderboard-card">
+  <!-- Leaderboard (visible to everyone) -->
+  <div class="leaderboard-card">
     <div class="lb-header">
       <h2>Leaderboard</h2>
       <span id="lb-sprint-label">No sprints yet</span>
     </div>
     <div id="leaderboard-rows"></div>
-    <p id="lb-empty" style="color:var(--muted);font-size:14px;font-style:italic;text-align:center;padding:10px 0">
-      Complete a sprint to see results here.
-    </p>
+    <p id="lb-empty">Complete a sprint to see results here.</p>
   </div>
+
 </div>
 
 <script>
-// ── STATE ────────────────────────────────────────────────────────────
+// ── CONSTANTS & STATE ─────────────────────────────────────────────────
 const ICONS = ['🦔','🐺','🦡','🦝','🐰','🦊','🐻','🦌','🐿️','🦦'];
-const SPRINT_COLORS = ['#e07b2a','#b85c1a','#d4922a','#7a9e4a','#4a7a9e'];
+const SPRINT_COLORS = ['#e07b2a','#b85c1a','#d4922a','#7a9e4a','#4a7a9e','#9e4a7a','#4a9e7a'];
 
 let state = {
-  duration: 20,       // minutes
-  currentSprint: 0,   // 0 = not started, 1-5
+  duration: 20,
+  currentSprint: 0,     // increments each time host hits Start Sprint
+  numSprintCols: 1,     // how many sprint columns are shown in the data-entry grid
   timerRunning: false,
   timerEnd: null,
   timerInterval: null,
-  sprints: [],        // [{start, end, wordsWritten}] per sprint, per writer
-  writers: [],        // [{id, name, icon, goal, sprints:[{start,end}]}]
-  myId: null,
-  maxSprints: 5,
+  writers: [],          // [{ id, name, icon, goal:0, sprints:[{start,end}] }]
 };
 
 const isHost = new URLSearchParams(location.search).has('host');
@@ -327,162 +346,116 @@ if (isHost) document.body.classList.add('host');
 
 // ── INIT ──────────────────────────────────────────────────────────────
 window.onload = () => {
-  renderIconGrid();
   renderIconSelect();
-  loadProfile();
-  renderSprintCards();
+  renderWriterGrid();
   renderLeaderboard();
-  updateHostWriterList();
+  setTimerDisplay(state.duration * 60);
 };
 
-// ── ICONS ─────────────────────────────────────────────────────────────
-function renderIconGrid() {
-  const grid = document.getElementById('icon-grid');
-  grid.innerHTML = '';
-  ICONS.forEach(icon => {
-    const btn = document.createElement('button');
-    btn.className = 'icon-btn';
-    btn.textContent = icon;
-    btn.dataset.icon = icon;
-    const taken = state.writers.some(w => w.icon === icon && w.id !== state.myId);
-    if (taken) btn.classList.add('taken');
-    btn.onclick = () => {
-      document.querySelectorAll('.icon-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-    };
-    grid.appendChild(btn);
-  });
-}
-
+// ── ICON SELECT ───────────────────────────────────────────────────────
 function renderIconSelect() {
   const sel = document.getElementById('add-icon-select');
   sel.innerHTML = '';
   ICONS.forEach(icon => {
     const opt = document.createElement('option');
-    opt.value = icon; opt.textContent = icon;
+    opt.value = icon;
+    opt.textContent = icon;
     sel.appendChild(opt);
   });
 }
 
-// ── PROFILE ───────────────────────────────────────────────────────────
-function saveProfile() {
-  const name = document.getElementById('input-name').value.trim();
-  const goal = parseInt(document.getElementById('input-goal').value) || 0;
-  const iconBtn = document.querySelector('.icon-btn.selected');
-  const err = document.getElementById('intake-error');
-  if (!name) { err.textContent = 'Please enter your name.'; err.style.display='block'; return; }
-  if (!iconBtn) { err.textContent = 'Please choose an icon.'; err.style.display='block'; return; }
-  err.style.display = 'none';
-  const icon = iconBtn.dataset.icon;
-  const id = state.myId || Date.now().toString(36);
-  state.myId = id;
-  const existing = state.writers.find(w => w.id === id);
-  if (existing) { existing.name = name; existing.icon = icon; existing.goal = goal; }
-  else state.writers.push({ id, name, icon, goal, sprints: [] });
-  showProfile(name, icon, goal);
-  renderSprintCards();
-  renderLeaderboard();
-  updateHostWriterList();
-}
+// ── WRITER GRID ───────────────────────────────────────────────────────
+function renderWriterGrid() {
+  const grid = document.getElementById('writer-grid');
+  grid.innerHTML = '';
 
-function loadProfile() {
-  // Nothing persisted — fresh each session
-}
-
-function showProfile(name, icon, goal) {
-  document.getElementById('intake-card').style.display = 'none';
-  const bar = document.getElementById('profile-bar');
-  bar.classList.add('visible');
-  document.getElementById('profile-icon-display').textContent = icon;
-  document.getElementById('profile-name-display').textContent = name;
-  document.getElementById('profile-goal-display').textContent =
-    goal ? `Daily goal: ${goal.toLocaleString()} words` : 'No daily goal set';
-}
-
-function editProfile() {
-  document.getElementById('intake-card').style.display = 'block';
-  document.getElementById('profile-bar').classList.remove('visible');
-  const me = state.writers.find(w => w.id === state.myId);
-  if (me) {
-    document.getElementById('input-name').value = me.name;
-    document.getElementById('input-goal').value = me.goal || '';
-    renderIconGrid();
-    const btn = [...document.querySelectorAll('.icon-btn')].find(b => b.dataset.icon === me.icon);
-    if (btn) btn.classList.add('selected');
+  if (state.writers.length === 0) {
+    grid.innerHTML = '<p style="font-size:13px;color:var(--muted);font-style:italic;margin-bottom:8px">No writers yet — add one below.</p>';
+    return;
   }
-}
 
-// ── SPRINT CARDS ──────────────────────────────────────────────────────
-function renderSprintCards() {
-  const row = document.getElementById('sprints-row');
-  row.innerHTML = '';
-  const me = state.writers.find(w => w.id === state.myId);
-
-  for (let i = 1; i <= state.maxSprints; i++) {
-    const card = document.createElement('div');
-    card.className = 'sprint-card';
-    const sprintData = me ? (me.sprints[i-1] || {}) : {};
-
-    if (i < state.currentSprint) {
-      card.classList.add('past');
-      card.style.background = SPRINT_COLORS[i-1];
-      const written = (sprintData.end || 0) - (sprintData.start || 0);
-      card.innerHTML = `
-        <div class="sprint-card-title">Sprint #${i}</div>
-        <div class="wc-row">
-          <div class="wc-box">
-            <label>Start</label>
-            <input type="number" value="${sprintData.start || ''}" placeholder="—"
-              onchange="updateMyCount(${i}, 'start', this.value)"/>
-          </div>
-          <span class="wc-arrow">→</span>
-          <div class="wc-box">
-            <label>End</label>
-            <input type="number" value="${sprintData.end || ''}" placeholder="—"
-              onchange="updateMyCount(${i}, 'end', this.value)"/>
-          </div>
+  // ── Header row ──
+  const header = document.createElement('div');
+  header.className = 'grid-header';
+  let headerHTML = `<div style="width:30px;flex-shrink:0"></div>
+                    <div class="grid-header-name">Writer</div>`;
+  for (let s = 1; s <= state.numSprintCols; s++) {
+    headerHTML += `
+      <div class="sprint-col">
+        <div class="sprint-col-label" style="color:${SPRINT_COLORS[s-1]}">Sprint ${s}</div>
+        <div class="grid-subheader">
+          <span>Start</span><span>End</span>
         </div>
-        ${written > 0 ? `<div class="sprint-words-written">+${written.toLocaleString()} words</div>` : ''}
-      `;
-    } else if (i === state.currentSprint) {
-      card.classList.add('active');
-      card.innerHTML = `
-        <div class="sprint-card-title">Sprint #${i} ← Active</div>
-        <div class="wc-row">
-          <div class="wc-box">
-            <label>Start</label>
-            <input type="number" value="${sprintData.start || ''}" placeholder="Words"
-              onchange="updateMyCount(${i}, 'start', this.value)"/>
+      </div>`;
+  }
+  header.innerHTML = headerHTML;
+  grid.appendChild(header);
+
+  // ── One row per writer ──
+  state.writers.forEach((w, wi) => {
+    const row = document.createElement('div');
+    row.className = 'host-writer-row';
+
+    let sprintHTML = '';
+    for (let s = 0; s < state.numSprintCols; s++) {
+      const sp = w.sprints[s] || {};
+      sprintHTML += `
+        <div class="sprint-col">
+          <div class="sprint-col-inputs">
+            <input class="host-wc-input start-input" type="number" placeholder="—"
+              value="${sp.start != null ? sp.start : ''}"
+              onchange="hostUpdateCount(${wi},${s},'start',this.value)"
+              title="Sprint ${s+1} — starting word count"/>
+            <input class="host-wc-input end-input" type="number" placeholder="—"
+              value="${sp.end != null ? sp.end : ''}"
+              onchange="hostUpdateCount(${wi},${s},'end',this.value)"
+              title="Sprint ${s+1} — ending word count"/>
           </div>
-          <span class="wc-arrow">→</span>
-          <div class="wc-box">
-            <label>End</label>
-            <input type="number" value="${sprintData.end || ''}" placeholder="Words"
-              onchange="updateMyCount(${i}, 'end', this.value)"/>
-          </div>
-        </div>
-      `;
-    } else {
-      card.classList.add('future');
-      card.innerHTML = `
-        <div class="sprint-card-title">Sprint #${i}</div>
-        <div class="future-msg">This sprint has not yet begun.</div>
-      `;
+        </div>`;
     }
-    row.appendChild(card);
-  }
+
+    row.innerHTML = `
+      <span class="icon-sm">${w.icon}</span>
+      <span class="host-writer-name">${w.name}</span>
+      ${sprintHTML}
+      <button class="remove-btn" onclick="removeWriter(${wi})" title="Remove ${w.name}">✕</button>`;
+    grid.appendChild(row);
+  });
 }
 
-function updateMyCount(sprintNum, field, val) {
-  const me = state.writers.find(w => w.id === state.myId);
-  if (!me) return;
-  while (me.sprints.length < sprintNum) me.sprints.push({});
-  me.sprints[sprintNum - 1][field] = parseInt(val) || 0;
-  // re-render leaderboard if host changed this
-  if (isHost) { renderLeaderboard(); }
+function hostUpdateCount(wi, si, field, val) {
+  const w = state.writers[wi];
+  while (w.sprints.length <= si) w.sprints.push({});
+  w.sprints[si][field] = val === '' ? null : (parseInt(val) || 0);
 }
 
-// ── HOST TIMER CONTROLS ───────────────────────────────────────────────
+function hostAddWriter() {
+  const icon = document.getElementById('add-icon-select').value;
+  const name = document.getElementById('add-name').value.trim();
+  if (!name) { showToast('Enter a name first.'); return; }
+  state.writers.push({ id: Date.now().toString(36), name, icon, goal: 0, sprints: [] });
+  document.getElementById('add-name').value = '';
+  renderWriterGrid();
+  renderLeaderboard();
+}
+
+function removeWriter(wi) {
+  state.writers.splice(wi, 1);
+  renderWriterGrid();
+  renderLeaderboard();
+}
+
+// ── ADD SPRINT COLUMN ─────────────────────────────────────────────────
+function addSprint() {
+  state.numSprintCols++;
+  renderWriterGrid();
+  // Scroll the grid right so the new column is visible
+  const grid = document.getElementById('writer-grid');
+  grid.scrollLeft = grid.scrollWidth;
+  showToast(`Sprint ${state.numSprintCols} column added!`);
+}
+
+// ── TIMER CONTROLS ────────────────────────────────────────────────────
 function setDuration(mins) {
   state.duration = mins;
   document.querySelectorAll('.duration-btn').forEach(b => {
@@ -492,14 +465,13 @@ function setDuration(mins) {
 }
 
 function setTimerDisplay(secs) {
-  const m = String(Math.floor(secs / 60)).padStart(2,'0');
-  const s = String(secs % 60).padStart(2,'0');
+  const m = String(Math.floor(secs / 60)).padStart(2, '0');
+  const s = String(secs % 60).padStart(2, '0');
   document.getElementById('timer-display').textContent = `${m}:${s}`;
   document.getElementById('timer-display').classList.toggle('urgent', secs <= 60 && secs > 0);
 }
 
 function hostStart() {
-  if (state.currentSprint >= state.maxSprints) { showToast('All sprints complete!'); return; }
   state.currentSprint++;
   state.timerRunning = true;
   state.timerEnd = Date.now() + state.duration * 60 * 1000;
@@ -519,28 +491,24 @@ function hostStart() {
     if (left === 0) {
       clearInterval(state.timerInterval);
       state.timerRunning = false;
-      document.getElementById('timer-status').textContent = `Sprint #${state.currentSprint} complete! Enter your word counts.`;
+      document.getElementById('timer-status').textContent = `Sprint #${state.currentSprint} complete! Collect word counts.`;
       document.getElementById('btn-end').style.display = 'none';
-      document.getElementById('btn-next').style.display = state.currentSprint < state.maxSprints ? 'inline-block' : 'none';
+      document.getElementById('btn-next').style.display = 'inline-block';
       document.getElementById('btn-reset').style.display = 'inline-block';
       playChime('end');
-      renderSprintCards();
     }
   }, 500);
-
-  renderSprintCards();
 }
 
 function hostEnd() {
   clearInterval(state.timerInterval);
   state.timerRunning = false;
   setTimerDisplay(0);
-  document.getElementById('timer-status').textContent = `Sprint #${state.currentSprint} ended. Enter word counts.`;
+  document.getElementById('timer-status').textContent = `Sprint #${state.currentSprint} ended. Collect word counts.`;
   document.getElementById('btn-end').style.display = 'none';
-  document.getElementById('btn-next').style.display = state.currentSprint < state.maxSprints ? 'inline-block' : 'none';
+  document.getElementById('btn-next').style.display = 'inline-block';
   document.getElementById('btn-reset').style.display = 'inline-block';
   playChime('end');
-  renderSprintCards();
 }
 
 function hostNext() {
@@ -557,8 +525,11 @@ function hostNext() {
 function hostReset() {
   if (!confirm('Reset all sprints and clear the leaderboard?')) return;
   clearInterval(state.timerInterval);
-  state.currentSprint = 0; state.timerRunning = false; state.timerEnd = null;
+  state.currentSprint = 0;
+  state.numSprintCols = 1;
+  state.timerRunning = false;
   state.writers.forEach(w => w.sprints = []);
+
   document.getElementById('sprint-label').textContent = 'WELCOME TO SPRINTS';
   document.getElementById('timer-status').textContent = 'Waiting to begin…';
   document.getElementById('btn-start').style.display = 'inline-block';
@@ -568,76 +539,19 @@ function hostReset() {
   document.getElementById('duration-row').style.opacity = '';
   document.getElementById('duration-row').style.pointerEvents = '';
   setTimerDisplay(state.duration * 60);
-  renderSprintCards();
+  renderWriterGrid();
   renderLeaderboard();
-  updateHostWriterList();
 }
 
-// ── HOST LEADERBOARD MANAGEMENT ───────────────────────────────────────
-function updateHostWriterList() {
-  const list = document.getElementById('host-writer-list');
-  list.innerHTML = '';
-  if (state.writers.length === 0) {
-    list.innerHTML = '<p style="font-size:13px;color:var(--muted);font-style:italic">No writers added yet.</p>';
-    return;
-  }
-  state.writers.forEach((w, wi) => {
-    const row = document.createElement('div');
-    row.className = 'host-writer-row';
-    const sprintInputs = Array.from({length: state.maxSprints}, (_, si) => {
-      const s = w.sprints[si] || {};
-      return `
-        <span class="host-wc-label">S${si+1}:</span>
-        <input class="host-wc-input" type="number" placeholder="Start"
-          value="${s.start||''}" data-wi="${wi}" data-si="${si}" data-field="start"
-          onchange="hostUpdateCount(${wi},${si},'start',this.value)" style="width:72px"/>
-        <input class="host-wc-input" type="number" placeholder="End"
-          value="${s.end||''}" data-wi="${wi}" data-si="${si}" data-field="end"
-          onchange="hostUpdateCount(${wi},${si},'end',this.value)" style="width:72px"/>
-      `;
-    }).join('');
-    row.innerHTML = `
-      <span class="icon-sm">${w.icon}</span>
-      <span class="host-writer-name">${w.name}</span>
-      ${sprintInputs}
-      <button class="remove-btn" onclick="removeWriter(${wi})" title="Remove">✕</button>
-    `;
-    list.appendChild(row);
-  });
-}
-
-function hostUpdateCount(wi, si, field, val) {
-  const w = state.writers[wi];
-  while (w.sprints.length <= si) w.sprints.push({});
-  w.sprints[si][field] = parseInt(val) || 0;
-}
-
+// ── LEADERBOARD ───────────────────────────────────────────────────────
 function updateLeaderboard() {
   renderLeaderboard();
   showToast('Leaderboard updated!');
-  const winner = getTopWriter();
-  if (winner && state.currentSprint >= 1) fireConfetti();
+  if (state.writers.some(w => w.sprints.some(s => ((s.end || 0) - (s.start || 0)) > 0))) {
+    fireConfetti();
+  }
 }
 
-function hostAddWriter() {
-  const icon = document.getElementById('add-icon-select').value;
-  const name = document.getElementById('add-name').value.trim();
-  if (!name) { showToast('Enter a name first.'); return; }
-  state.writers.push({ id: Date.now().toString(36), name, icon, goal: 0, sprints: [] });
-  document.getElementById('add-name').value = '';
-  updateHostWriterList();
-  renderLeaderboard();
-  renderIconGrid();
-}
-
-function removeWriter(wi) {
-  state.writers.splice(wi, 1);
-  updateHostWriterList();
-  renderLeaderboard();
-  renderIconGrid();
-}
-
-// ── LEADERBOARD RENDER ────────────────────────────────────────────────
 function renderLeaderboard() {
   const container = document.getElementById('leaderboard-rows');
   const empty = document.getElementById('lb-empty');
@@ -645,46 +559,44 @@ function renderLeaderboard() {
   container.innerHTML = '';
 
   const ranked = state.writers.map(w => {
-    const sprintTotals = w.sprints.map(s => Math.max(0, (s.end||0) - (s.start||0)));
-    const total = sprintTotals.reduce((a,b) => a+b, 0);
+    const sprintTotals = w.sprints.map(s => Math.max(0, (s.end || 0) - (s.start || 0)));
+    const total = sprintTotals.reduce((a, b) => a + b, 0);
     return { ...w, sprintTotals, total };
-  }).filter(w => w.total > 0 || state.writers.length > 0);
+  });
 
   const hasData = ranked.some(w => w.total > 0);
   empty.style.display = hasData ? 'none' : 'block';
-  if (!hasData && state.writers.length === 0) { label.textContent = 'No sprints yet'; return; }
 
-  const sorted = [...ranked].sort((a,b) => b.total - a.total);
+  if (!hasData) {
+    label.textContent = 'No sprints yet';
+    return;
+  }
+
+  const sorted = [...ranked].sort((a, b) => b.total - a.total);
   const maxTotal = sorted[0]?.total || 1;
-  label.textContent = state.currentSprint > 0 ? `Through Sprint #${state.currentSprint - (state.timerRunning?1:0) || state.currentSprint}` : 'Standings';
+  const n = state.numSprintCols;
+  label.textContent = `${n} Sprint${n !== 1 ? 's' : ''}`;
 
   sorted.forEach(w => {
-    if (!isHost && w.total === 0 && !w.sprints.length) return;
+    if (w.total === 0) return;
     const row = document.createElement('div');
     row.className = 'lb-row';
-    const metGoal = w.goal > 0 && w.total >= w.goal;
 
     const segmentsHTML = w.sprintTotals.map((t, i) => {
       const pct = maxTotal > 0 ? (t / maxTotal * 100) : 0;
-      return `<div class="lb-segment" style="width:${pct}%;background:${SPRINT_COLORS[i]}" title="Sprint ${i+1}: +${t} words"></div>`;
+      return `<div class="lb-segment"
+        style="width:${pct}%;background:${SPRINT_COLORS[i]}"
+        title="Sprint ${i+1}: +${t.toLocaleString()} words"></div>`;
     }).join('');
 
     row.innerHTML = `
       <div class="lb-icon">${w.icon}</div>
       <div class="lb-name">${w.name}</div>
-      <div class="lb-bar-wrap">${segmentsHTML || '<div class="lb-segment" style="width:0%"></div>'}</div>
+      <div class="lb-bar-wrap">${segmentsHTML}</div>
       <div class="lb-total">${w.total.toLocaleString()}</div>
-      <div class="lb-star">${metGoal ? '⭐' : ''}</div>
-    `;
+      <div class="lb-star"></div>`;
     container.appendChild(row);
   });
-}
-
-function getTopWriter() {
-  const sorted = [...state.writers]
-    .map(w => ({ ...w, total: w.sprints.reduce((a,s) => a + Math.max(0,(s.end||0)-(s.start||0)), 0) }))
-    .sort((a,b) => b.total - a.total);
-  return sorted[0];
 }
 
 // ── SOUND ──────────────────────────────────────────────────────────────
@@ -692,8 +604,8 @@ function playChime(type) {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const notes = type === 'start'
-      ? [{ f:523, t:0 }, { f:659, t:0.12 }, { f:784, t:0.24 }]        // C E G rising
-      : [{ f:784, t:0 }, { f:659, t:0.15 }, { f:523, t:0.3 }, { f:392, t:0.5 }]; // falling
+      ? [{ f: 523, t: 0 }, { f: 659, t: 0.12 }, { f: 784, t: 0.24 }]
+      : [{ f: 784, t: 0 }, { f: 659, t: 0.15 }, { f: 523, t: 0.3 }, { f: 392, t: 0.5 }];
     notes.forEach(({ f, t }) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -705,7 +617,7 @@ function playChime(type) {
       osc.start(ctx.currentTime + t);
       osc.stop(ctx.currentTime + t + 0.6);
     });
-  } catch(e) { /* audio not available */ }
+  } catch (e) { /* audio not supported */ }
 }
 
 // ── CONFETTI ───────────────────────────────────────────────────────────
@@ -714,26 +626,26 @@ function fireConfetti() {
   canvas.width = window.innerWidth; canvas.height = window.innerHeight;
   const ctx = canvas.getContext('2d');
   const colors = ['#e07b2a','#f5d57a','#c96a18','#8bbd5a','#4a9ee0','#fff8e7','#8b4513'];
-  let particles = Array.from({length: 140}, () => ({
+  let particles = Array.from({ length: 140 }, () => ({
     x: Math.random() * canvas.width, y: -20,
-    w: Math.random()*12+4, h: Math.random()*6+3,
-    color: colors[Math.floor(Math.random()*colors.length)],
-    vx: (Math.random()-0.5)*4, vy: Math.random()*4+2,
-    angle: Math.random()*Math.PI*2, spin: (Math.random()-0.5)*0.15, opacity: 1
+    w: Math.random() * 12 + 4, h: Math.random() * 6 + 3,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    vx: (Math.random() - 0.5) * 4, vy: Math.random() * 4 + 2,
+    angle: Math.random() * Math.PI * 2, spin: (Math.random() - 0.5) * 0.15, opacity: 1
   }));
   let raf;
   function animate() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     particles.forEach(p => {
-      p.x+=p.vx; p.y+=p.vy; p.angle+=p.spin; p.opacity-=0.005;
-      ctx.save(); ctx.globalAlpha=Math.max(0,p.opacity);
-      ctx.translate(p.x,p.y); ctx.rotate(p.angle);
-      ctx.fillStyle=p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      p.x += p.vx; p.y += p.vy; p.angle += p.spin; p.opacity -= 0.005;
+      ctx.save(); ctx.globalAlpha = Math.max(0, p.opacity);
+      ctx.translate(p.x, p.y); ctx.rotate(p.angle);
+      ctx.fillStyle = p.color; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
       ctx.restore();
     });
-    particles = particles.filter(p=>p.opacity>0);
+    particles = particles.filter(p => p.opacity > 0);
     if (particles.length) raf = requestAnimationFrame(animate);
-    else ctx.clearRect(0,0,canvas.width,canvas.height);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
   cancelAnimationFrame(raf);
   animate();
@@ -745,9 +657,6 @@ function showToast(msg) {
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
 }
-
-// Initial timer display
-setTimerDisplay(20 * 60);
 </script>
 </body>
 </html>
