@@ -164,51 +164,6 @@
   .sprint-words-written { font-size: 11px; margin-top: 8px; font-weight: 700; color: rgba(255,255,255,0.9); }
   .sprint-card.active .sprint-words-written { color: var(--orange); }
 
-  /* ── WELCOME / INTAKE ────────────────────────── */
-  .intake-card {
-    background: var(--card); border: 1.5px solid var(--border);
-    border-radius: 14px; padding: 24px; margin-bottom: 24px;
-  }
-  .intake-card h2 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--dark); margin-bottom: 16px; }
-  .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
-  .field input {
-    width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px;
-    font-family: 'Lato', sans-serif; font-size: 15px; color: var(--dark); background: white; outline: none;
-    transition: border-color 0.15s;
-  }
-  .field input:focus { border-color: var(--orange); }
-
-  /* icon picker */
-  .icon-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
-  .icon-btn {
-    width: 52px; height: 52px; border-radius: 50%; border: 2.5px solid var(--border);
-    background: white; font-size: 26px; cursor: pointer; display: flex; align-items: center;
-    justify-content: center; transition: all 0.15s; position: relative;
-  }
-  .icon-btn:hover { border-color: var(--orange); transform: scale(1.08); }
-  .icon-btn.selected { border-color: var(--orange); background: #fff3e0; box-shadow: 0 0 0 3px rgba(224,123,42,0.2); }
-  .icon-btn.taken { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
-  .icon-btn.taken::after { content: '✕'; position: absolute; font-size: 14px; color: #c0392b; }
-
-  .save-btn {
-    width: 100%; padding: 13px; background: var(--orange); color: white; border: none;
-    border-radius: 8px; font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700;
-    cursor: pointer; letter-spacing: 0.06em; transition: background 0.15s; margin-top: 4px;
-  }
-  .save-btn:hover { background: var(--orange2); }
-  .profile-bar {
-    display: none; align-items: center; gap: 12px;
-    background: var(--card); border: 1.5px solid var(--border); border-radius: 12px;
-    padding: 12px 16px; margin-bottom: 20px;
-  }
-  .profile-bar.visible { display: flex; }
-  .profile-icon { font-size: 32px; }
-  .profile-info { flex: 1; }
-  .profile-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; }
-  .profile-goal { font-size: 12px; color: var(--muted); }
-  .edit-link { font-size: 12px; color: var(--orange); cursor: pointer; text-decoration: underline; }
-
   /* ── LEADERBOARD ─────────────────────────────── */
   .leaderboard-card {
     background: var(--card); border: 1.5px solid var(--border);
@@ -322,38 +277,6 @@
 
 <!-- MAIN -->
 <div class="main">
-
-  <!-- Profile bar (after intake saved) -->
-  <div class="profile-bar" id="profile-bar">
-    <div class="profile-icon" id="profile-icon-display">🦔</div>
-    <div class="profile-info">
-      <div class="profile-name" id="profile-name-display"></div>
-      <div class="profile-goal" id="profile-goal-display"></div>
-    </div>
-    <span class="edit-link" onclick="editProfile()">Edit</span>
-  </div>
-
-  <!-- Intake card -->
-  <div class="intake-card" id="intake-card">
-    <h2>Welcome! Set yourself up.</h2>
-    <div class="field">
-      <label>Your Name</label>
-      <input type="text" id="input-name" placeholder="e.g. Morgan"/>
-    </div>
-    <div class="field">
-      <label>Today's Word Count Goal</label>
-      <input type="number" id="input-goal" placeholder="e.g. 2000"/>
-    </div>
-    <div class="field">
-      <label>Choose Your Icon</label>
-      <div class="icon-grid" id="icon-grid"></div>
-    </div>
-    <button class="save-btn" onclick="saveProfile()">Let's Sprint! →</button>
-    <p id="intake-error" style="color:#c0392b;font-size:13px;margin-top:8px;display:none"></p>
-  </div>
-
-  <!-- Sprint cards -->
-  <div class="sprints-row" id="sprints-row"></div>
 
   <!-- HOST: Leaderboard data entry -->
   <div class="host-lb-section" id="host-lb-section">
