@@ -3,256 +3,407 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Writing Sprints</title>
+<title>Community Write-Ins · Rasa Writing Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Faculty+Glyphic&family=Potta+One&display=swap" rel="stylesheet">
-  
+<link href="https://fonts.googleapis.com/css2?family=Potta+One&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
-  :root {
-    --tan:    #e8d9b8;
-    --tan2:   #d4c49a;
-    --cream:  #fdf6e3;
-    --orange: #e07b2a;
-    --orange2:#c96a18;
-    --brown:  #8b4513;
-    --dark:   #3a2210;
-    --s1:     #e07b2a;
-    --s2:     #b85c1a;
-    --s3:     #d4922a;
-    --s4:     #7a9e4a;
-    --s5:     #4a7a9e;
-    --bg:     #f5ead0;
-    --card:   #fdf6e3;
-    --border: #c8ad7a;
-    --muted:  #9a8060;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Faculty Glyphic', sans-serif;
-    background: var(--bg);
-    background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23c8ad7a' fill-opacity='0.8'%3E%3Cpath d='M0 0h80v80H0z'/%3E%3Cpath fill='none' stroke='%23c8ad7a' stroke-opacity='0.5' d='M0 40h80M40 0v80'/%3E%3C/g%3E%3C/svg%3E");
-    color: var(--dark);
-    min-height: 100vh;
-  }
+/* ── RESET & ROOT ──────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* ── HEADER ─────────────────────────────────── */
-  header {
-    background: var(--tan);
-    border-bottom: 2px solid var(--border);
-    padding: 18px 24px 14px;
-    text-align: center;
-    position: relative;
-  }
-  header h1 {
-    font-family: 'Potta One', sans-serif;
-    font-size: clamp(22px, 5vw, 36px);
-    color: var(--dark);
-    letter-spacing: 0.04em;
-  }
-  header p { font-size: 12px; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 3px; }
-  .host-badge {
-    display: none;
-    position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
-    background: var(--orange); color: white; font-size: 11px; font-weight: 700;
-    padding: 4px 10px; border-radius: 20px; letter-spacing: 0.1em; text-transform: uppercase;
-  }
-  body.host .host-badge { display: block; }
+:root {
+  --cream:    #fdf4e0;
+  --parchment:#f0e2c0;
+  --tan:      #e0cc9e;
+  --orange:   #d4621a;
+  --orange2:  #b84e10;
+  --rust:     #8b3a0f;
+  --gold:     #c9920a;
+  --green:    #3d6b38;
+  --green2:   #2e5029;
+  --teal:     #2e6e6e;
+  --dark:     #2a1a08;
+  --brown:    #6b3a1f;
+  --muted:    #8a6a4a;
+  --border:   #c4a464;
 
-  /* ── TIMER HERO ──────────────────────────────── */
-  .timer-hero {
-    background: var(--tan);
-    border-bottom: 2px solid var(--border);
-    padding: 28px 20px 22px;
-    text-align: center;
-  }
-  .sprint-label {
-    font-family: 'Potta One', sans-serif;
-    font-size: clamp(15px, 3vw, 20px);
-    color: var(--brown);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-  .timer-display {
-    font-family: 'Potta one', sans-serif;
-    font-size: clamp(64px, 18vw, 110px);
-    font-weight: 900;
-    color: var(--dark);
-    line-height: 1;
-    letter-spacing: 0.02em;
-    transition: color 0.4s;
-  }
-  .timer-display.urgent { color: #c0392b; animation: pulse 0.8s infinite alternate; }
-  @keyframes pulse { from { opacity: 1; } to { opacity: 0.6; } }
-  .timer-status { font-size: 13px; color: var(--muted); margin-top: 8px; min-height: 20px; letter-spacing: 0.05em; }
+  --s1: #d4621a;
+  --s2: #8b3a0f;
+  --s3: #c9920a;
+  --s4: #3d6b38;
+  --s5: #2e6e6e;
+  --s6: #7a3d6e;
+  --s7: #3d5e7a;
 
-  /* ── HOST TIMER CONTROLS ─────────────────────── */
-  .host-controls {
-    display: none;
-    background: #fef9ee;
-    border: 1.5px dashed var(--border);
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin: 16px auto;
-    max-width: 600px;
-    gap: 12px;
-    flex-direction: column;
-    align-items: center;
-  }
-  body.host .host-controls { display: flex; }
-  .host-controls-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; }
-  .host-label { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); width: 100%; text-align: center; }
-  .duration-btn {
-    background: white; border: 1.5px solid var(--border); color: var(--dark);
-    padding: 6px 14px; border-radius: 20px; font-family: inherit; font-size: 13px;
-    cursor: pointer; transition: all 0.15s;
-  }
-  .duration-btn.active, .duration-btn:hover { background: var(--orange); border-color: var(--orange); color: white; }
-  .big-btn {
-    font-family: 'Faculty Glyphic', sans-serif; font-weight: 700; font-size: 15px;
-    padding: 11px 28px; border-radius: 8px; border: none; cursor: pointer;
-    letter-spacing: 0.05em; transition: all 0.15s; text-transform: uppercase;
-  }
-  .btn-start { background: var(--orange); color: white; }
-  .btn-start:hover { background: var(--orange2); }
-  .btn-end { background: var(--brown); color: white; }
-  .btn-end:hover { background: #6b3410; }
-  .btn-next { background: #4a7a3a; color: white; }
-  .btn-next:hover { background: #3a6030; }
-  .btn-reset { background: #888; color: white; font-size: 12px; padding: 8px 16px; }
-  .btn-reset:hover { background: #666; }
+  --font-display: 'Potta One', cursive;
+  --font-body:    'DM Sans', sans-serif;
+  --font-serif:   'Lora', serif;
+}
 
-  /* ── MAIN LAYOUT ─────────────────────────────── */
-  .main { max-width: 960px; margin: 0 auto; padding: 20px 16px 60px; }
+html, body {
+  height: 100%;
+  overflow: hidden; /* no scroll — full viewport only */
+}
 
-  /* ── HOST DATA ENTRY SECTION ─────────────────── */
-  .host-lb-section {
-    display: none;
-    background: #fef9ee; border: 1.5px dashed var(--border);
-    border-radius: 12px; padding: 20px; margin-bottom: 20px;
-  }
-  body.host .host-lb-section { display: block; }
-  .host-lb-section h3 {
-    font-family: 'Potta One', sans-serif; font-size: 16px;
-    margin-bottom: 14px; color: var(--brown);
-  }
+body {
+  font-family: var(--font-body);
+  background: var(--parchment);
+  color: var(--dark);
+  display: flex;
+  flex-direction: column;
+  /* crosshatch texture */
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(180,140,80,0.13) 39px, rgba(180,140,80,0.13) 40px),
+    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(180,140,80,0.13) 39px, rgba(180,140,80,0.13) 40px),
+    linear-gradient(160deg, #f5e8c4 0%, #ecddb4 60%, #e8d8a8 100%);
+}
 
-  /* scrollable writer grid */
-  .writer-grid { overflow-x: auto; padding-bottom: 6px; }
+/* ── HEADER ───────────────────────────────────── */
+header {
+  background: var(--green);
+  padding: 10px 24px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 3px solid var(--green2);
+  flex-shrink: 0;
+  position: relative;
+}
+.header-left { display: flex; flex-direction: column; }
+.header-studio {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 11px;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.08em;
+  margin-bottom: 1px;
+}
+.header-title {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 3vw, 28px);
+  color: #fff;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.header-tagline {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  margin-top: 2px;
+}
+.header-pen { font-size: 28px; opacity: 0.35; }
+.host-badge {
+  display: none;
+  background: var(--orange); color: white;
+  font-size: 10px; font-weight: 700; font-family: var(--font-body);
+  padding: 3px 10px; border-radius: 20px; letter-spacing: 0.12em;
+  text-transform: uppercase; position: absolute; right: 16px; top: 50%;
+  transform: translateY(-50%);
+}
+body.host .host-badge { display: block; }
 
-  /* writer rows */
-  .host-writer-row {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 8px; min-width: max-content;
-  }
-  .icon-sm { font-size: 22px; width: 30px; text-align: center; flex-shrink: 0; }
-  .host-writer-name { font-weight: 700; font-size: 13px; width: 90px; flex-shrink: 0; }
+/* ── BODY LAYOUT ──────────────────────────────── */
+.body-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: 1fr auto;
+  gap: 0;
+  min-height: 0;
+}
 
-  /* sprint column group */
-  .sprint-col { display: flex; flex-direction: column; align-items: center; gap: 3px; flex-shrink: 0; }
-  .sprint-col-label {
-    font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
-    text-transform: uppercase; white-space: nowrap;
-  }
-  .sprint-col-inputs { display: flex; gap: 4px; }
-  .host-wc-input {
-    width: 68px; padding: 6px 8px; border: 1.5px solid var(--border); border-radius: 6px;
-    font-family: 'Faculty Glyphic', sans-serif; font-size: 13px; color: var(--dark);
-    background: white; outline: none; text-align: center;
-  }
-  .host-wc-input:focus { border-color: var(--orange); }
-  .host-wc-input.start-input { border-color: #c8c0b0; }
-  .host-wc-input.end-input   { border-color: var(--orange2); }
+/* ── LEFT PANEL ───────────────────────────────── */
+.left-panel {
+  background: var(--green);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 20px 20px;
+  gap: 14px;
+  border-right: 3px solid var(--green2);
+  position: relative;
+  overflow: hidden;
+}
+/* decorative leaf watermark */
+.left-panel::before {
+  content: '🌿';
+  position: absolute;
+  font-size: 120px;
+  bottom: -20px;
+  right: -20px;
+  opacity: 0.08;
+  pointer-events: none;
+}
 
-  .remove-btn {
-    background: none; border: none; color: #c0392b; font-size: 18px; cursor: pointer;
-    padding: 0 2px; line-height: 1; flex-shrink: 0;
-  }
+/* timer box */
+.timer-box {
+  background: #2e5029;
+  border: 3px solid rgba(255,255,255,0.12);
+  border-radius: 16px;
+  padding: 14px 12px 10px;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.3), 0 2px 0 rgba(255,255,255,0.06);
+}
+.sprint-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.timer-display {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4.5vw, 60px);
+  color: var(--orange);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 24px rgba(212,98,26,0.5);
+  transition: color 0.4s, text-shadow 0.4s;
+  white-space: nowrap;
+}
+.timer-display.urgent {
+  color: #ff4444;
+  text-shadow: 0 0 28px rgba(255,68,68,0.6);
+  animation: pulse 0.8s infinite alternate;
+}
+@keyframes pulse { from { opacity:1 } to { opacity:0.65 } }
+.timer-status {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  margin-top: 6px;
+  min-height: 16px;
+  letter-spacing: 0.04em;
+}
 
-  /* column header row */
-  .grid-header {
-    display: flex; align-items: flex-end; gap: 10px;
-    margin-bottom: 6px; padding-bottom: 8px;
-    border-bottom: 1px solid var(--border); min-width: max-content;
-  }
-  .grid-header-name { width: 120px; flex-shrink: 0; font-size: 11px; font-weight: 700;
-    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-  .grid-subheader { display: flex; gap: 4px; }
-  .grid-subheader span { width: 68px; font-size: 10px; color: var(--muted); text-align: center; }
+/* duration pills */
+.duration-row {
+  display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;
+}
+.duration-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.75);
+  padding: 5px 12px; border-radius: 20px;
+  font-family: var(--font-body); font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all 0.15s;
+}
+.duration-btn:hover, .duration-btn.active {
+  background: var(--orange); border-color: var(--orange); color: white;
+}
 
-  /* host bottom action row */
-  .host-action-row {
-    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
-    margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border);
-  }
-  .update-lb-btn {
-    background: var(--brown); color: white; border: none; border-radius: 7px;
-    padding: 9px 20px; font-family: inherit; font-weight: 700; font-size: 13px;
-    cursor: pointer; letter-spacing: 0.05em;
-  }
-  .update-lb-btn:hover { background: #6b3410; }
-  .add-sprint-btn {
-    background: #4a7a9e; color: white; border: none; border-radius: 7px;
-    padding: 9px 20px; font-family: inherit; font-weight: 700; font-size: 13px;
-    cursor: pointer; letter-spacing: 0.05em;
-  }
-  .add-sprint-btn:hover { background: #3a6080; }
+/* action buttons */
+.action-row { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+.big-btn {
+  font-family: var(--font-display); font-size: 14px;
+  padding: 10px 20px; border-radius: 10px; border: none;
+  cursor: pointer; letter-spacing: 0.06em; transition: all 0.15s;
+  text-transform: uppercase; width: 100%;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.3);
+}
+.big-btn:active { transform: translateY(2px); box-shadow: none; }
+.btn-start { background: var(--orange); color: white; }
+.btn-start:hover { background: var(--orange2); }
+.btn-end { background: #8b3a0f; color: white; }
+.btn-end:hover { background: #6b2a08; }
+.btn-next { background: #4a7a3a; color: white; }
+.btn-next:hover { background: #3a6030; }
+.secondary-row { display: flex; gap: 8px; }
+.small-action-btn {
+  flex: 1; font-family: var(--font-body); font-weight: 700; font-size: 12px;
+  padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer;
+  transition: all 0.15s; letter-spacing: 0.04em; text-transform: uppercase;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.25);
+}
+.small-action-btn:active { transform: translateY(1px); box-shadow: none; }
+.btn-reset { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.8); }
+.btn-reset:hover { background: rgba(255,255,255,0.25); }
 
-  /* add writer row */
-  .add-writer-row {
-    display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
-    margin-top: 10px; padding-top: 12px; border-top: 1px solid var(--border);
-  }
-  .add-writer-label { font-size: 11px; font-weight: 700; letter-spacing: 0.15em;
-    text-transform: uppercase; color: var(--muted); }
-  .small-input {
-    padding: 7px 11px; border: 1.5px solid var(--border); border-radius: 6px;
-    font-family: 'Faculty Glyphic', sans-serif; font-size: 13px; color: var(--dark);
-    background: white; outline: none;
-  }
-  .add-btn {
-    background: var(--orange); color: white; border: none; border-radius: 6px;
-    padding: 7px 16px; font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer;
-  }
-  .add-btn:hover { background: var(--orange2); }
+/* host-only sections hidden for participants */
+.host-only { display: none; }
+body.host .host-only { display: flex; }
 
-  /* ── LEADERBOARD ─────────────────────────────── */
-  .leaderboard-card {
-    background: var(--card); border: 1.5px solid var(--border);
-    border-radius: 14px; padding: 22px 20px; margin-bottom: 24px;
-  }
-  .lb-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; }
-  .lb-header h2 { font-family: 'Potta One', sans-serif; font-size: 22px; }
-  .lb-header span { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
-  .lb-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-  .lb-icon { font-size: 28px; width: 36px; text-align: center; flex-shrink: 0; }
-  .lb-name { font-weight: 700; font-size: 14px; min-width: 80px; flex-shrink: 0; }
-  .lb-bar-wrap { flex: 1; height: 28px; background: #ede4cf; border-radius: 6px; overflow: hidden; display: flex; }
-  .lb-segment { height: 100%; transition: width 0.6s ease; min-width: 0; }
-  .lb-segment:first-child { border-radius: 6px 0 0 6px; }
-  .lb-segment:last-child:not(:first-child) { border-radius: 0 6px 6px 0; }
-  .lb-segment:only-child { border-radius: 6px; }
-  .lb-total { font-weight: 700; font-size: 15px; min-width: 52px; text-align: right; flex-shrink: 0; }
-  .lb-star { font-size: 18px; min-width: 22px; flex-shrink: 0; }
-  #lb-empty { color: var(--muted); font-size: 14px; font-style: italic; text-align: center; padding: 10px 0; }
+/* ── RIGHT PANEL ──────────────────────────────── */
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 14px 16px 12px;
+  gap: 12px;
+  overflow: hidden;
+}
 
-  /* ── CONFETTI ─────────────────────────────────── */
-  #confetti-canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; }
+/* ── HOST DATA ENTRY CARD ─────────────────────── */
+.host-data-card {
+  display: none;
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px 10px;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  flex-shrink: 0;
+}
+body.host .host-data-card { display: flex; }
 
-  /* ── TOAST ────────────────────────────────────── */
-  .toast {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
-    background: var(--dark); color: var(--cream); padding: 12px 24px; border-radius: 30px;
-    font-size: 14px; font-weight: 700; letter-spacing: 0.05em;
-    transition: transform 0.35s cubic-bezier(.34,1.56,.64,1); z-index: 1000; white-space: nowrap;
-  }
-  .toast.show { transform: translateX(-50%) translateY(0); }
+.card-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--brown);
+  letter-spacing: 0.06em;
+  display: flex; align-items: center; gap: 6px;
+}
 
-  @media (max-width: 480px) {
-    .lb-name { min-width: 60px; }
-    .host-writer-name { width: 70px; }
-  }
+/* writer grid */
+.writer-grid { overflow-x: auto; padding-bottom: 4px; }
+.writer-grid::-webkit-scrollbar { height: 4px; }
+.writer-grid::-webkit-scrollbar-track { background: transparent; }
+.writer-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.grid-header, .host-writer-row {
+  display: flex; align-items: center; gap: 8px; min-width: max-content;
+}
+.grid-header {
+  padding-bottom: 6px; margin-bottom: 4px;
+  border-bottom: 1.5px solid var(--tan);
+}
+.col-icon  { width: 28px; flex-shrink: 0; }
+.col-name  { width: 80px; flex-shrink: 0; font-size: 10px; font-weight: 700;
+              text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+.sprint-col { display: flex; flex-direction: column; align-items: center; gap: 2px; flex-shrink: 0; }
+.sprint-col-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.sprint-col-sub { display: flex; gap: 4px; }
+.sprint-col-sub span { width: 58px; font-size: 9px; color: var(--muted); text-align: center; }
+
+.host-writer-row { margin-bottom: 5px; }
+.icon-sm { font-size: 18px; width: 28px; text-align: center; flex-shrink: 0; }
+.writer-name-cell { width: 80px; flex-shrink: 0; font-size: 12px; font-weight: 700; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.wc-pair { display: flex; gap: 4px; flex-shrink: 0; }
+.wc-in {
+  width: 58px; padding: 5px 6px; border-radius: 6px; text-align: center;
+  font-family: var(--font-body); font-size: 13px; font-weight: 600;
+  color: var(--dark); outline: none; transition: border-color 0.15s;
+}
+.wc-in.start-in { border: 1.5px solid #d0c0a0; background: #fdf8f0; }
+.wc-in.end-in   { border: 1.5px solid var(--orange); background: #fff5ee; }
+.wc-in:focus    { border-color: var(--gold) !important; box-shadow: 0 0 0 2px rgba(201,146,10,0.2); }
+
+.remove-btn {
+  background: none; border: none; color: #cc4444; font-size: 14px;
+  cursor: pointer; padding: 0 3px; line-height: 1; flex-shrink: 0; opacity: 0.6;
+}
+.remove-btn:hover { opacity: 1; }
+
+/* host action strip */
+.host-action-strip { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding-top: 6px; border-top: 1px solid var(--tan); }
+.pill-btn {
+  font-family: var(--font-body); font-weight: 700; font-size: 12px;
+  padding: 7px 14px; border-radius: 20px; border: none; cursor: pointer;
+  letter-spacing: 0.04em; transition: all 0.15s;
+}
+.pill-update { background: var(--rust); color: white; }
+.pill-update:hover { background: #6b2a08; }
+.pill-sprint { background: var(--teal); color: white; }
+.pill-sprint:hover { background: #1e5050; }
+
+/* add writer */
+.add-writer-strip { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.add-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+.add-icon-sel {
+  border: 1.5px solid var(--border); border-radius: 6px; background: white;
+  padding: 4px 6px; font-size: 16px; cursor: pointer; outline: none;
+}
+.add-name-in {
+  border: 1.5px solid var(--border); border-radius: 6px; background: white;
+  padding: 5px 10px; font-family: var(--font-body); font-size: 13px; color: var(--dark);
+  width: 110px; outline: none;
+}
+.add-name-in:focus { border-color: var(--orange); }
+.add-writer-btn {
+  background: var(--orange); color: white; border: none; border-radius: 6px;
+  padding: 6px 14px; font-family: var(--font-body); font-weight: 700;
+  font-size: 12px; cursor: pointer; letter-spacing: 0.04em;
+}
+.add-writer-btn:hover { background: var(--orange2); }
+
+/* ── LEADERBOARD CARD ─────────────────────────── */
+.leaderboard-card {
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 16px 12px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+.lb-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  flex-shrink: 0;
+}
+.lb-title { font-family: var(--font-display); font-size: 17px; color: var(--dark); }
+.lb-subtitle { font-size: 10px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+
+.lb-rows { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+.lb-rows::-webkit-scrollbar { width: 4px; }
+.lb-rows::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.lb-row { display: flex; align-items: center; gap: 10px; }
+.lb-icon { font-size: 24px; width: 30px; text-align: center; flex-shrink: 0; }
+.lb-name { font-weight: 700; font-size: 13px; min-width: 70px; flex-shrink: 0; }
+.lb-bar-wrap {
+  flex: 1; height: 24px; background: var(--parchment);
+  border-radius: 6px; overflow: hidden; display: flex;
+  border: 1px solid var(--tan);
+}
+.lb-segment { height: 100%; transition: width 0.7s cubic-bezier(.34,1,.64,1); min-width: 0; }
+.lb-segment:first-child { border-radius: 5px 0 0 5px; }
+.lb-segment:last-child:not(:first-child) { border-radius: 0 5px 5px 0; }
+.lb-segment:only-child { border-radius: 5px; }
+.lb-total { font-weight: 700; font-size: 15px; min-width: 54px; text-align: right; flex-shrink: 0; color: var(--brown); font-family: var(--font-serif); }
+.lb-badge { font-size: 16px; min-width: 22px; flex-shrink: 0; text-align: center; }
+
+.lb-empty { font-family: var(--font-serif); font-style: italic; font-size: 13px; color: var(--muted); text-align: center; padding: 16px 0; }
+
+/* ── CONFETTI & TOAST ─────────────────────────── */
+#confetti-canvas { position: fixed; top:0; left:0; pointer-events:none; z-index:9999; }
+.toast {
+  position: fixed; bottom: 20px; left: 50%;
+  transform: translateX(-50%) translateY(70px);
+  background: var(--dark); color: var(--cream);
+  padding: 10px 22px; border-radius: 30px;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+  z-index: 1000; white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── BOTTOM FULL-WIDTH (leaderboard span) ─────── */
+.bottom-row {
+  grid-column: 1 / -1;
+  border-top: 3px solid var(--green2);
+  background: var(--cream);
+  padding: 12px 16px;
+  display: flex;
+  gap: 16px;
+  min-height: 0;
+  max-height: 220px;
+}
+
+/* Participant view: left panel shows timer only, right shows leaderboard only */
+/* We just hide host-only stuff via CSS */
 </style>
 </head>
 <body>
@@ -260,96 +411,106 @@
 <canvas id="confetti-canvas"></canvas>
 <div class="toast" id="toast"></div>
 
+<!-- ── HEADER ─────────────────────────────────── -->
 <header>
-  <p> Rasa Writing Studio presents </p>
-  <h1>Virtual Community Write-ins</h1>
-  <p>Every word counts.</p>
+  <div class="header-left">
+    <span class="header-studio">Rasa Writing Studio presents</span>
+    <h1 class="header-title">COMMUNITY WRITE-INS</h1>
+    <span class="header-tagline">Every word counts.</span>
+  </div>
   <span class="host-badge">HOST</span>
 </header>
 
-<!-- Timer hero -->
-<div class="timer-hero">
-  <div class="sprint-label" id="sprint-label">WELCOME TO SPRINTS</div>
-  <div class="timer-display" id="timer-display">20:00</div>
-  <div class="timer-status" id="timer-status">Waiting to begin…</div>
+<!-- ── BODY GRID ──────────────────────────────── -->
+<div class="body-grid">
 
-  <!-- HOST CONTROLS (only visible on ?host=true) -->
-  <div class="host-controls">
-    <div class="host-label">Sprint Duration</div>
-    <div class="host-controls-row" id="duration-row">
+  <!-- ════ LEFT: TIMER PANEL ════ -->
+  <div class="left-panel">
+    <!-- Timer box -->
+    <div class="timer-box">
+      <div class="sprint-label" id="sprint-label">Welcome to Sprints</div>
+      <div class="timer-display" id="timer-display">20:00</div>
+      <div class="timer-status" id="timer-status">Waiting to begin…</div>
+    </div>
+
+    <!-- Duration pills — host only -->
+    <div class="duration-row host-only" id="duration-row" style="flex-wrap:wrap;">
       <button class="duration-btn" onclick="setDuration(15)">15 min</button>
       <button class="duration-btn active" onclick="setDuration(20)">20 min</button>
       <button class="duration-btn" onclick="setDuration(25)">25 min</button>
       <button class="duration-btn" onclick="setDuration(30)">30 min</button>
       <button class="duration-btn" onclick="setDuration(40)">40 min</button>
-       <button class="duration-btn" onclick="setDuration(5)">Break</button>
     </div>
-    <div class="host-controls-row">
+
+    <!-- Action buttons — host only -->
+    <div class="action-row host-only" style="flex-direction:column;">
       <button class="big-btn btn-start" id="btn-start" onclick="hostStart()">▶ Start Sprint</button>
       <button class="big-btn btn-end"   id="btn-end"   onclick="hostEnd()"  style="display:none">⏹ End Sprint</button>
       <button class="big-btn btn-next"  id="btn-next"  onclick="hostNext()" style="display:none">→ Next Sprint</button>
-      <button class="big-btn btn-reset" id="btn-reset" onclick="hostReset()" style="display:none">↺ Reset All</button>
-    </div>
-  </div>
-</div>
-
-<!-- MAIN -->
-<div class="main">
-
-  <!-- HOST: Data entry panel (only visible on ?host=true) -->
-  <div class="host-lb-section">
-    <h3>📋 Writers &amp; Word Counts</h3>
-
-    <div class="writer-grid" id="writer-grid">
-      <!-- headers + writer rows rendered by JS -->
-    </div>
-
-    <!-- Bottom actions -->
-    <div class="host-action-row">
-      <button class="update-lb-btn" onclick="updateLeaderboard()">Update Leaderboard</button>
-      <button class="add-sprint-btn" onclick="addSprint()">+ Add Sprint</button>
-    </div>
-
-    <!-- Add a new writer -->
-    <div class="add-writer-row">
-      <span class="add-writer-label">Add writer:</span>
-      <select id="add-icon-select" class="small-input" style="font-size:18px; padding:5px 8px;"></select>
-      <input type="text" class="small-input" id="add-name" placeholder="Name" style="width:120px"/>
-      <button class="add-btn" onclick="hostAddWriter()">+ Add</button>
+      <div class="secondary-row">
+        <button class="small-action-btn btn-reset" id="btn-reset" onclick="hostReset()" style="display:none">↺ Reset All</button>
+      </div>
     </div>
   </div>
 
-  <!-- Leaderboard (visible to everyone) -->
-  <div class="leaderboard-card">
-    <div class="lb-header">
-      <h2>Leaderboard</h2>
-      <span id="lb-sprint-label">No sprints yet</span>
-    </div>
-    <div id="leaderboard-rows"></div>
-    <p id="lb-empty">Complete a sprint to see results here.</p>
-  </div>
+  <!-- ════ RIGHT: DATA + LEADERBOARD ════ -->
+  <div class="right-panel">
 
-</div>
+    <!-- HOST: Writers & Word Counts -->
+    <div class="host-data-card">
+      <div class="card-title">📋 Writers &amp; Word Counts</div>
+
+      <div class="writer-grid" id="writer-grid"></div>
+
+      <div class="host-action-strip">
+        <button class="pill-btn pill-update" onclick="updateLeaderboard()">Update Leaderboard</button>
+        <button class="pill-btn pill-sprint" onclick="addSprint()">+ Add Sprint</button>
+        <div class="add-writer-strip" style="margin-left:auto;">
+          <span class="add-label">Add:</span>
+          <select id="add-icon-select" class="add-icon-sel"></select>
+          <input type="text" class="add-name-in" id="add-name" placeholder="Name"/>
+          <button class="add-writer-btn" onclick="hostAddWriter()">+ Add</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Leaderboard — visible to everyone -->
+    <div class="leaderboard-card">
+      <div class="lb-header">
+        <span class="lb-title">🏆 Leaderboard</span>
+        <span class="lb-subtitle" id="lb-sprint-label">No sprints yet</span>
+      </div>
+      <div class="lb-rows" id="leaderboard-rows">
+        <p class="lb-empty" id="lb-empty">Complete a sprint to see results here.</p>
+      </div>
+    </div>
+
+  </div>
+  <!-- /right-panel -->
+
+</div><!-- /body-grid -->
 
 <script>
-// ── CONSTANTS & STATE ─────────────────────────────────────────────────
+// ── STATE ──────────────────────────────────────────────────────────────
 const ICONS = ['🦔','🐺','🦡','🦝','🐰','🦊','🐻','🦌','🐿️','🦦'];
-const SPRINT_COLORS = ['#e07b2a','#b85c1a','#d4922a','#7a9e4a','#4a7a9e','#9e4a7a','#4a9e7a'];
+const SPRINT_COLORS = ['#d4621a','#8b3a0f','#c9920a','#3d6b38','#2e6e6e','#7a3d6e','#3d5e7a'];
+const MEDALS = ['🥇','🥈','🥉'];
 
 let state = {
   duration: 20,
-  currentSprint: 0,     // increments each time host hits Start Sprint
-  numSprintCols: 1,     // how many sprint columns are shown in the data-entry grid
+  currentSprint: 0,
+  numSprintCols: 1,
   timerRunning: false,
   timerEnd: null,
   timerInterval: null,
-  writers: [],          // [{ id, name, icon, goal:0, sprints:[{start,end}] }]
+  writers: [],
 };
 
-const isHost = new URLSearchParams(location.search).has('host');
+// Show host view by default; participants use ?participant=true to hide controls
+const isParticipant = new URLSearchParams(location.search).has('participant');
+const isHost = !isParticipant;
 if (isHost) document.body.classList.add('host');
 
-// ── INIT ──────────────────────────────────────────────────────────────
 window.onload = () => {
   renderIconSelect();
   renderWriterGrid();
@@ -357,73 +518,56 @@ window.onload = () => {
   setTimerDisplay(state.duration * 60);
 };
 
-// ── ICON SELECT ───────────────────────────────────────────────────────
+// ── ICONS ──────────────────────────────────────────────────────────────
 function renderIconSelect() {
   const sel = document.getElementById('add-icon-select');
-  sel.innerHTML = '';
-  ICONS.forEach(icon => {
-    const opt = document.createElement('option');
-    opt.value = icon;
-    opt.textContent = icon;
-    sel.appendChild(opt);
-  });
+  sel.innerHTML = ICONS.map(i => `<option value="${i}">${i}</option>`).join('');
 }
 
-// ── WRITER GRID ───────────────────────────────────────────────────────
+// ── WRITER GRID ────────────────────────────────────────────────────────
 function renderWriterGrid() {
   const grid = document.getElementById('writer-grid');
   grid.innerHTML = '';
 
   if (state.writers.length === 0) {
-    grid.innerHTML = '<p style="font-size:13px;color:var(--muted);font-style:italic;margin-bottom:8px">No writers yet — add one below.</p>';
+    grid.innerHTML = '<p style="font-size:12px;color:var(--muted);font-style:italic">No writers yet — add one below.</p>';
     return;
   }
 
-  // ── Header row ──
-  const header = document.createElement('div');
-  header.className = 'grid-header';
-  let headerHTML = `<div style="width:30px;flex-shrink:0"></div>
-                    <div class="grid-header-name">Writer</div>`;
+  // Header
+  const hdr = document.createElement('div');
+  hdr.className = 'grid-header';
+  let hHTML = `<div class="col-icon"></div><div class="col-name">Writer</div>`;
   for (let s = 1; s <= state.numSprintCols; s++) {
-    headerHTML += `
-      <div class="sprint-col">
-        <div class="sprint-col-label" style="color:${SPRINT_COLORS[s-1]}">Sprint ${s}</div>
-        <div class="grid-subheader">
-          <span>Start</span><span>End</span>
-        </div>
-      </div>`;
+    hHTML += `<div class="sprint-col">
+      <div class="sprint-col-label" style="color:${SPRINT_COLORS[s-1]||'#666'}">Sprint ${s}</div>
+      <div class="sprint-col-sub"><span>Start</span><span>End</span></div>
+    </div>`;
   }
-  header.innerHTML = headerHTML;
-  grid.appendChild(header);
+  hdr.innerHTML = hHTML;
+  grid.appendChild(hdr);
 
-  // ── One row per writer ──
+  // Writer rows
   state.writers.forEach((w, wi) => {
     const row = document.createElement('div');
     row.className = 'host-writer-row';
-
-    let sprintHTML = '';
+    let cells = `<span class="icon-sm">${w.icon}</span>
+                 <span class="writer-name-cell" title="${w.name}">${w.name}</span>`;
     for (let s = 0; s < state.numSprintCols; s++) {
       const sp = w.sprints[s] || {};
-      sprintHTML += `
-        <div class="sprint-col">
-          <div class="sprint-col-inputs">
-            <input class="host-wc-input start-input" type="number" placeholder="—"
-              value="${sp.start != null ? sp.start : ''}"
-              onchange="hostUpdateCount(${wi},${s},'start',this.value)"
-              title="Sprint ${s+1} — starting word count"/>
-            <input class="host-wc-input end-input" type="number" placeholder="—"
-              value="${sp.end != null ? sp.end : ''}"
-              onchange="hostUpdateCount(${wi},${s},'end',this.value)"
-              title="Sprint ${s+1} — ending word count"/>
-          </div>
-        </div>`;
+      cells += `<div class="wc-pair">
+        <input class="wc-in start-in" type="number" placeholder="—"
+          value="${sp.start != null ? sp.start : ''}"
+          onchange="hostUpdateCount(${wi},${s},'start',this.value)"
+          title="Sprint ${s+1} start"/>
+        <input class="wc-in end-in" type="number" placeholder="—"
+          value="${sp.end != null ? sp.end : ''}"
+          onchange="hostUpdateCount(${wi},${s},'end',this.value)"
+          title="Sprint ${s+1} end"/>
+      </div>`;
     }
-
-    row.innerHTML = `
-      <span class="icon-sm">${w.icon}</span>
-      <span class="host-writer-name">${w.name}</span>
-      ${sprintHTML}
-      <button class="remove-btn" onclick="removeWriter(${wi})" title="Remove ${w.name}">✕</button>`;
+    cells += `<button class="remove-btn" onclick="removeWriter(${wi})" title="Remove">✕</button>`;
+    row.innerHTML = cells;
     grid.appendChild(row);
   });
 }
@@ -438,7 +582,7 @@ function hostAddWriter() {
   const icon = document.getElementById('add-icon-select').value;
   const name = document.getElementById('add-name').value.trim();
   if (!name) { showToast('Enter a name first.'); return; }
-  state.writers.push({ id: Date.now().toString(36), name, icon, goal: 0, sprints: [] });
+  state.writers.push({ id: Date.now().toString(36), name, icon, sprints: [] });
   document.getElementById('add-name').value = '';
   renderWriterGrid();
   renderLeaderboard();
@@ -450,28 +594,25 @@ function removeWriter(wi) {
   renderLeaderboard();
 }
 
-// ── ADD SPRINT COLUMN ─────────────────────────────────────────────────
 function addSprint() {
   state.numSprintCols++;
   renderWriterGrid();
-  // Scroll the grid right so the new column is visible
   const grid = document.getElementById('writer-grid');
-  grid.scrollLeft = grid.scrollWidth;
+  setTimeout(() => { grid.scrollLeft = grid.scrollWidth; }, 50);
   showToast(`Sprint ${state.numSprintCols} column added!`);
 }
 
-// ── TIMER CONTROLS ────────────────────────────────────────────────────
+// ── TIMER ──────────────────────────────────────────────────────────────
 function setDuration(mins) {
   state.duration = mins;
-  document.querySelectorAll('.duration-btn').forEach(b => {
-    b.classList.toggle('active', parseInt(b.textContent) === mins);
-  });
+  document.querySelectorAll('.duration-btn').forEach(b =>
+    b.classList.toggle('active', parseInt(b.textContent) === mins));
   if (!state.timerRunning) setTimerDisplay(mins * 60);
 }
 
 function setTimerDisplay(secs) {
-  const m = String(Math.floor(secs / 60)).padStart(2, '0');
-  const s = String(secs % 60).padStart(2, '0');
+  const m = String(Math.floor(secs / 60)).padStart(2,'0');
+  const s = String(secs % 60).padStart(2,'0');
   document.getElementById('timer-display').textContent = `${m}:${s}`;
   document.getElementById('timer-display').classList.toggle('urgent', secs <= 60 && secs > 0);
 }
@@ -481,13 +622,11 @@ function hostStart() {
   state.timerRunning = true;
   state.timerEnd = Date.now() + state.duration * 60 * 1000;
 
-  document.getElementById('sprint-label').textContent = `SPRINT #${state.currentSprint}`;
+  document.getElementById('sprint-label').textContent = `Sprint #${state.currentSprint}`;
   document.getElementById('timer-status').textContent = `Sprint #${state.currentSprint} is live — write!`;
-  document.getElementById('btn-start').style.display = 'none';
-  document.getElementById('btn-end').style.display = 'inline-block';
-  document.getElementById('duration-row').style.opacity = '0.4';
+  show('btn-start', false); show('btn-end', true);
+  document.getElementById('duration-row').style.opacity = '0.35';
   document.getElementById('duration-row').style.pointerEvents = 'none';
-
   playChime('start');
 
   state.timerInterval = setInterval(() => {
@@ -496,10 +635,8 @@ function hostStart() {
     if (left === 0) {
       clearInterval(state.timerInterval);
       state.timerRunning = false;
-      document.getElementById('timer-status').textContent = `Sprint #${state.currentSprint} complete! Collect word counts.`;
-      document.getElementById('btn-end').style.display = 'none';
-      document.getElementById('btn-next').style.display = 'inline-block';
-      document.getElementById('btn-reset').style.display = 'inline-block';
+      document.getElementById('timer-status').textContent = `Sprint #${state.currentSprint} done! Collect word counts.`;
+      show('btn-end', false); show('btn-next', true); show('btn-reset', true);
       playChime('end');
     }
   }, 500);
@@ -510,96 +647,83 @@ function hostEnd() {
   state.timerRunning = false;
   setTimerDisplay(0);
   document.getElementById('timer-status').textContent = `Sprint #${state.currentSprint} ended. Collect word counts.`;
-  document.getElementById('btn-end').style.display = 'none';
-  document.getElementById('btn-next').style.display = 'inline-block';
-  document.getElementById('btn-reset').style.display = 'inline-block';
+  show('btn-end', false); show('btn-next', true); show('btn-reset', true);
   playChime('end');
 }
 
 function hostNext() {
-  document.getElementById('btn-next').style.display = 'none';
-  document.getElementById('btn-reset').style.display = 'none';
-  document.getElementById('btn-start').style.display = 'inline-block';
+  show('btn-next', false); show('btn-reset', false); show('btn-start', true);
   document.getElementById('duration-row').style.opacity = '';
   document.getElementById('duration-row').style.pointerEvents = '';
   setTimerDisplay(state.duration * 60);
   document.getElementById('timer-status').textContent = 'Ready for next sprint…';
-  document.getElementById('sprint-label').textContent = `SPRINT #${state.currentSprint + 1} — READY`;
+  document.getElementById('sprint-label').textContent = `Sprint #${state.currentSprint + 1} — Ready`;
 }
 
 function hostReset() {
   if (!confirm('Reset all sprints and clear the leaderboard?')) return;
   clearInterval(state.timerInterval);
-  state.currentSprint = 0;
-  state.numSprintCols = 1;
-  state.timerRunning = false;
+  Object.assign(state, { currentSprint:0, numSprintCols:1, timerRunning:false });
   state.writers.forEach(w => w.sprints = []);
-
-  document.getElementById('sprint-label').textContent = 'WELCOME TO SPRINTS';
+  document.getElementById('sprint-label').textContent = 'Welcome to Sprints';
   document.getElementById('timer-status').textContent = 'Waiting to begin…';
-  document.getElementById('btn-start').style.display = 'inline-block';
-  document.getElementById('btn-end').style.display = 'none';
-  document.getElementById('btn-next').style.display = 'none';
-  document.getElementById('btn-reset').style.display = 'none';
+  show('btn-start', true); show('btn-end', false); show('btn-next', false); show('btn-reset', false);
   document.getElementById('duration-row').style.opacity = '';
   document.getElementById('duration-row').style.pointerEvents = '';
   setTimerDisplay(state.duration * 60);
-  renderWriterGrid();
-  renderLeaderboard();
+  renderWriterGrid(); renderLeaderboard();
 }
 
-// ── LEADERBOARD ───────────────────────────────────────────────────────
+function show(id, visible) {
+  document.getElementById(id).style.display = visible ? 'inline-block' : 'none';
+}
+
+// ── LEADERBOARD ────────────────────────────────────────────────────────
 function updateLeaderboard() {
   renderLeaderboard();
   showToast('Leaderboard updated!');
-  if (state.writers.some(w => w.sprints.some(s => ((s.end || 0) - (s.start || 0)) > 0))) {
+  if (state.writers.some(w => w.sprints.some(s => ((s.end||0)-(s.start||0)) > 0)))
     fireConfetti();
-  }
 }
 
 function renderLeaderboard() {
   const container = document.getElementById('leaderboard-rows');
   const empty = document.getElementById('lb-empty');
   const label = document.getElementById('lb-sprint-label');
-  container.innerHTML = '';
 
   const ranked = state.writers.map(w => {
-    const sprintTotals = w.sprints.map(s => Math.max(0, (s.end || 0) - (s.start || 0)));
-    const total = sprintTotals.reduce((a, b) => a + b, 0);
+    const sprintTotals = w.sprints.map(s => Math.max(0, (s.end||0)-(s.start||0)));
+    const total = sprintTotals.reduce((a,b) => a+b, 0);
     return { ...w, sprintTotals, total };
-  });
+  }).sort((a,b) => b.total - a.total);
 
   const hasData = ranked.some(w => w.total > 0);
   empty.style.display = hasData ? 'none' : 'block';
+  label.textContent = hasData
+    ? `${state.numSprintCols} Sprint${state.numSprintCols !== 1 ? 's' : ''}`
+    : 'No sprints yet';
 
-  if (!hasData) {
-    label.textContent = 'No sprints yet';
-    return;
-  }
+  // remove old rows (keep empty p)
+  [...container.querySelectorAll('.lb-row')].forEach(r => r.remove());
+  if (!hasData) return;
 
-  const sorted = [...ranked].sort((a, b) => b.total - a.total);
-  const maxTotal = sorted[0]?.total || 1;
-  const n = state.numSprintCols;
-  label.textContent = `${n} Sprint${n !== 1 ? 's' : ''}`;
+  const maxTotal = ranked[0]?.total || 1;
 
-  sorted.forEach(w => {
+  ranked.forEach((w, i) => {
     if (w.total === 0) return;
     const row = document.createElement('div');
     row.className = 'lb-row';
-
-    const segmentsHTML = w.sprintTotals.map((t, i) => {
-      const pct = maxTotal > 0 ? (t / maxTotal * 100) : 0;
-      return `<div class="lb-segment"
-        style="width:${pct}%;background:${SPRINT_COLORS[i]}"
-        title="Sprint ${i+1}: +${t.toLocaleString()} words"></div>`;
+    const segs = w.sprintTotals.map((t, si) => {
+      const pct = (t / maxTotal * 100).toFixed(1);
+      return `<div class="lb-segment" style="width:${pct}%;background:${SPRINT_COLORS[si]||'#888'}"
+        title="Sprint ${si+1}: +${t.toLocaleString()} words"></div>`;
     }).join('');
-
     row.innerHTML = `
       <div class="lb-icon">${w.icon}</div>
       <div class="lb-name">${w.name}</div>
-      <div class="lb-bar-wrap">${segmentsHTML}</div>
+      <div class="lb-bar-wrap">${segs}</div>
       <div class="lb-total">${w.total.toLocaleString()}</div>
-      <div class="lb-star"></div>`;
+      <div class="lb-badge">${MEDALS[i] || ''}</div>`;
     container.appendChild(row);
   });
 }
@@ -609,20 +733,18 @@ function playChime(type) {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const notes = type === 'start'
-      ? [{ f: 523, t: 0 }, { f: 659, t: 0.12 }, { f: 784, t: 0.24 }]
-      : [{ f: 784, t: 0 }, { f: 659, t: 0.15 }, { f: 523, t: 0.3 }, { f: 392, t: 0.5 }];
-    notes.forEach(({ f, t }) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
+      ? [{f:523,t:0},{f:659,t:0.12},{f:784,t:0.24}]
+      : [{f:784,t:0},{f:659,t:0.15},{f:523,t:0.3},{f:392,t:0.5}];
+    notes.forEach(({f,t}) => {
+      const osc = ctx.createOscillator(), gain = ctx.createGain();
       osc.connect(gain); gain.connect(ctx.destination);
       osc.type = 'sine'; osc.frequency.value = f;
-      gain.gain.setValueAtTime(0.001, ctx.currentTime + t);
-      gain.gain.exponentialRampToValueAtTime(0.35, ctx.currentTime + t + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.5);
-      osc.start(ctx.currentTime + t);
-      osc.stop(ctx.currentTime + t + 0.6);
+      gain.gain.setValueAtTime(0.001, ctx.currentTime+t);
+      gain.gain.exponentialRampToValueAtTime(0.35, ctx.currentTime+t+0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+t+0.5);
+      osc.start(ctx.currentTime+t); osc.stop(ctx.currentTime+t+0.6);
     });
-  } catch (e) { /* audio not supported */ }
+  } catch(e) {}
 }
 
 // ── CONFETTI ───────────────────────────────────────────────────────────
@@ -630,33 +752,31 @@ function fireConfetti() {
   const canvas = document.getElementById('confetti-canvas');
   canvas.width = window.innerWidth; canvas.height = window.innerHeight;
   const ctx = canvas.getContext('2d');
-  const colors = ['#e07b2a','#f5d57a','#c96a18','#8bbd5a','#4a9ee0','#fff8e7','#8b4513'];
-  let particles = Array.from({ length: 140 }, () => ({
-    x: Math.random() * canvas.width, y: -20,
-    w: Math.random() * 12 + 4, h: Math.random() * 6 + 3,
-    color: colors[Math.floor(Math.random() * colors.length)],
-    vx: (Math.random() - 0.5) * 4, vy: Math.random() * 4 + 2,
-    angle: Math.random() * Math.PI * 2, spin: (Math.random() - 0.5) * 0.15, opacity: 1
+  const colors = ['#d4621a','#f5d57a','#c9920a','#8bbd5a','#4a9ee0','#fdf4e0','#8b3a0f'];
+  let parts = Array.from({length:150}, () => ({
+    x: Math.random()*canvas.width, y:-20,
+    w: Math.random()*12+4, h: Math.random()*6+3,
+    color: colors[Math.floor(Math.random()*colors.length)],
+    vx:(Math.random()-.5)*4, vy:Math.random()*4+2,
+    angle:Math.random()*Math.PI*2, spin:(Math.random()-.5)*.15, opacity:1
   }));
   let raf;
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-      p.x += p.vx; p.y += p.vy; p.angle += p.spin; p.opacity -= 0.005;
-      ctx.save(); ctx.globalAlpha = Math.max(0, p.opacity);
-      ctx.translate(p.x, p.y); ctx.rotate(p.angle);
-      ctx.fillStyle = p.color; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+  (function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    parts.forEach(p => {
+      p.x+=p.vx; p.y+=p.vy; p.angle+=p.spin; p.opacity-=0.005;
+      ctx.save(); ctx.globalAlpha=Math.max(0,p.opacity);
+      ctx.translate(p.x,p.y); ctx.rotate(p.angle);
+      ctx.fillStyle=p.color; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
       ctx.restore();
     });
-    particles = particles.filter(p => p.opacity > 0);
-    if (particles.length) raf = requestAnimationFrame(animate);
-    else ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-  cancelAnimationFrame(raf);
-  animate();
+    parts = parts.filter(p=>p.opacity>0);
+    if (parts.length) raf=requestAnimationFrame(animate);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  })();
 }
 
-// ── TOAST ─────────────────────────────────────────────────────────────
+// ── TOAST ──────────────────────────────────────────────────────────────
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
