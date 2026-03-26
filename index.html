@@ -6,404 +6,414 @@
 <title>Community Write-Ins · Rasa Writing Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Potta+One&family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Potta+One&family=DM+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
 <style>
-/* ── RESET & ROOT ──────────────────────────────── */
+/* ── RESET ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
   --cream:    #fdf4e0;
   --parchment:#f0e2c0;
-  --tan:      #e0cc9e;
+  --tan:      #dfc99a;
   --orange:   #d4621a;
   --orange2:  #b84e10;
   --rust:     #8b3a0f;
   --gold:     #c9920a;
-  --green:    #3d6b38;
-  --green2:   #2e5029;
+  --green:    #3a6435;
+  --green2:   #2b4e27;
+  --green3:   #1e3a1b;
   --teal:     #2e6e6e;
   --dark:     #2a1a08;
   --brown:    #6b3a1f;
   --muted:    #8a6a4a;
   --border:   #c4a464;
 
+  /* Two fonts only: Potta One for display, DM Sans for everything else */
+  --fd: 'Potta One', cursive;
+  --fb: 'DM Sans', sans-serif;
+
+  /* One base size; all others are multiples */
+  --sz-xs:  11px;
+  --sz-sm:  13px;
+  --sz-md:  15px;
+  --sz-lg:  18px;
+  --sz-xl:  22px;
+
   --s1: #d4621a;
   --s2: #8b3a0f;
   --s3: #c9920a;
-  --s4: #3d6b38;
+  --s4: #3a6435;
   --s5: #2e6e6e;
   --s6: #7a3d6e;
   --s7: #3d5e7a;
-
-  --font-display: 'Potta One', cursive;
-  --font-body:    'DM Sans', sans-serif;
-  --font-serif:   'Lora', serif;
 }
 
-html, body {
-  height: 100%;
-  overflow: hidden; /* no scroll — full viewport only */
-}
+html, body { height: 100%; overflow: hidden; }
 
 body {
-  font-family: var(--font-body);
+  font-family: var(--fb);
+  font-size: var(--sz-sm);
   background: var(--parchment);
   color: var(--dark);
   display: flex;
   flex-direction: column;
-  /* crosshatch texture */
   background-image:
-    repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(180,140,80,0.13) 39px, rgba(180,140,80,0.13) 40px),
-    repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(180,140,80,0.13) 39px, rgba(180,140,80,0.13) 40px),
-    linear-gradient(160deg, #f5e8c4 0%, #ecddb4 60%, #e8d8a8 100%);
+    repeating-linear-gradient(0deg,   transparent, transparent 39px, rgba(160,120,60,0.1) 39px, rgba(160,120,60,0.1) 40px),
+    repeating-linear-gradient(90deg,  transparent, transparent 39px, rgba(160,120,60,0.1) 39px, rgba(160,120,60,0.1) 40px),
+    linear-gradient(150deg, #f7eccb 0%, #eddcae 55%, #e5d4a0 100%);
 }
 
-/* ── HEADER ───────────────────────────────────── */
+/* ══════════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════════ */
 header {
   background: var(--green);
-  padding: 10px 24px 8px;
+  border-bottom: 4px solid var(--green3);
+  padding: 9px 20px 8px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  border-bottom: 3px solid var(--green2);
+  gap: 12px;
   flex-shrink: 0;
   position: relative;
+  /* subtle wood-grain stripe */
+  background-image: repeating-linear-gradient(
+    90deg, transparent, transparent 60px,
+    rgba(255,255,255,0.02) 60px, rgba(255,255,255,0.02) 61px
+  ), linear-gradient(180deg, #3a6435 0%, #2e5029 100%);
 }
-.header-left { display: flex; flex-direction: column; }
+.header-icon { font-size: 30px; flex-shrink: 0; }
+.header-text { display: flex; flex-direction: column; gap: 1px; }
 .header-studio {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 11px;
-  color: rgba(255,255,255,0.6);
-  letter-spacing: 0.08em;
-  margin-bottom: 1px;
+  font-family: var(--fb); font-style: italic; font-size: var(--sz-xs);
+  color: rgba(255,255,255,0.5); letter-spacing: 0.1em;
 }
 .header-title {
-  font-family: var(--font-display);
-  font-size: clamp(18px, 3vw, 28px);
-  color: #fff;
-  letter-spacing: 0.04em;
-  line-height: 1;
+  font-family: var(--fd); font-size: clamp(17px, 2.6vw, 26px);
+  color: #fff; letter-spacing: 0.03em; line-height: 1;
 }
-.header-tagline {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 12px;
-  color: rgba(255,255,255,0.55);
-  margin-top: 2px;
+.header-sub {
+  font-family: var(--fb); font-style: italic; font-size: var(--sz-xs);
+  color: rgba(255,255,255,0.45);
 }
-.header-pen { font-size: 28px; opacity: 0.35; }
 .host-badge {
-  display: none;
+  display: none; margin-left: auto;
   background: var(--orange); color: white;
-  font-size: 10px; font-weight: 700; font-family: var(--font-body);
-  padding: 3px 10px; border-radius: 20px; letter-spacing: 0.12em;
-  text-transform: uppercase; position: absolute; right: 16px; top: 50%;
-  transform: translateY(-50%);
+  font-family: var(--fb); font-size: var(--sz-xs); font-weight: 700;
+  padding: 3px 12px; border-radius: 20px; letter-spacing: 0.12em; text-transform: uppercase;
 }
 body.host .host-badge { display: block; }
 
-/* ── BODY LAYOUT ──────────────────────────────── */
+/* ══════════════════════════════════════════════
+   BODY GRID: left col | right col
+══════════════════════════════════════════════ */
 .body-grid {
-  flex: 1;
+  flex: 1; min-height: 0;
   display: grid;
-  grid-template-columns: 260px 1fr;
-  grid-template-rows: 1fr auto;
-  gap: 0;
-  min-height: 0;
+  grid-template-columns: 240px 1fr;
 }
 
-/* ── LEFT PANEL ───────────────────────────────── */
+/* ══════════════════════════════════════════════
+   LEFT PANEL — timer + controls
+══════════════════════════════════════════════ */
 .left-panel {
   background: var(--green);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 16px 20px 20px;
-  gap: 14px;
-  border-right: 3px solid var(--green2);
-  position: relative;
-  overflow: hidden;
+  background-image: linear-gradient(170deg, #3a6435 0%, #2b4e27 100%);
+  border-right: 4px solid var(--green3);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 16px 18px; gap: 12px;
+  position: relative; overflow: hidden;
 }
-/* decorative leaf watermark */
-.left-panel::before {
-  content: '🌿';
-  position: absolute;
-  font-size: 120px;
-  bottom: -20px;
-  right: -20px;
-  opacity: 0.08;
-  pointer-events: none;
+/* decorative quill watermark */
+.left-panel::after {
+  content: '✍️';
+  position: absolute; font-size: 100px;
+  bottom: -12px; right: -10px; opacity: 0.07; pointer-events: none;
 }
 
-/* timer box */
+/* ── Timer box ── */
 .timer-box {
-  background: #2e5029;
-  border: 3px solid rgba(255,255,255,0.12);
-  border-radius: 16px;
-  padding: 14px 12px 10px;
-  text-align: center;
   width: 100%;
+  background: var(--green3);
+  border: 2px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 12px 10px 10px;
+  text-align: center;
+  box-shadow: inset 0 3px 10px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.07);
   overflow: hidden;
-  box-shadow: inset 0 2px 8px rgba(0,0,0,0.3), 0 2px 0 rgba(255,255,255,0.06);
 }
 .sprint-label {
-  font-family: var(--font-display);
-  font-size: 11px;
-  color: rgba(255,255,255,0.55);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: 2px;
+  font-family: var(--fb); font-size: var(--sz-xs);
+  font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.4); margin-bottom: 3px;
 }
 .timer-display {
-  font-family: var(--font-display);
-  font-size: clamp(36px, 4.5vw, 60px);
+  font-family: var(--fd);
+  font-size: clamp(44px, 5vw, 64px);
   color: var(--orange);
-  line-height: 1;
-  letter-spacing: 0.02em;
-  text-shadow: 0 0 24px rgba(212,98,26,0.5);
+  line-height: 1; letter-spacing: 0.03em;
+  text-shadow: 0 0 30px rgba(212,98,26,0.55);
   transition: color 0.4s, text-shadow 0.4s;
-  white-space: nowrap;
+  white-space: nowrap; overflow: hidden;
 }
 .timer-display.urgent {
   color: #ff4444;
-  text-shadow: 0 0 28px rgba(255,68,68,0.6);
+  text-shadow: 0 0 30px rgba(255,68,68,0.65);
   animation: pulse 0.8s infinite alternate;
 }
-@keyframes pulse { from { opacity:1 } to { opacity:0.65 } }
+@keyframes pulse { from { opacity:1 } to { opacity:0.6 } }
 .timer-status {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 11px;
-  color: rgba(255,255,255,0.45);
-  margin-top: 6px;
-  min-height: 16px;
-  letter-spacing: 0.04em;
+  font-family: var(--fb); font-style: italic; font-size: var(--sz-xs);
+  color: rgba(255,255,255,0.38); margin-top: 5px; min-height: 15px;
 }
 
-/* duration pills */
-.duration-row {
-  display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;
-}
+/* ── Duration pills ── */
+.duration-row { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; }
 .duration-btn {
-  background: rgba(255,255,255,0.1);
-  border: 1.5px solid rgba(255,255,255,0.2);
-  color: rgba(255,255,255,0.75);
-  padding: 5px 12px; border-radius: 20px;
-  font-family: var(--font-body); font-size: 12px; font-weight: 600;
-  cursor: pointer; transition: all 0.15s;
+  background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.7); padding: 4px 11px; border-radius: 20px;
+  font-family: var(--fb); font-size: var(--sz-xs); font-weight: 600; cursor: pointer;
+  transition: all 0.15s;
 }
 .duration-btn:hover, .duration-btn.active {
   background: var(--orange); border-color: var(--orange); color: white;
 }
 
-/* action buttons */
-.action-row { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+/* ── Big action buttons ── */
+.action-stack { display: flex; flex-direction: column; gap: 7px; width: 100%; }
 .big-btn {
-  font-family: var(--font-display); font-size: 14px;
-  padding: 10px 20px; border-radius: 10px; border: none;
-  cursor: pointer; letter-spacing: 0.06em; transition: all 0.15s;
-  text-transform: uppercase; width: 100%;
-  box-shadow: 0 3px 0 rgba(0,0,0,0.3);
+  font-family: var(--fd); font-size: var(--sz-sm);
+  padding: 9px 16px; border-radius: 10px; border: none; cursor: pointer;
+  letter-spacing: 0.05em; text-transform: uppercase; width: 100%;
+  box-shadow: 0 3px 0 rgba(0,0,0,0.35); transition: all 0.15s;
 }
 .big-btn:active { transform: translateY(2px); box-shadow: none; }
 .btn-start { background: var(--orange); color: white; }
 .btn-start:hover { background: var(--orange2); }
-.btn-end { background: #8b3a0f; color: white; }
-.btn-end:hover { background: #6b2a08; }
-.btn-next { background: #4a7a3a; color: white; }
+.btn-end   { background: #7a3010; color: white; }
+.btn-end:hover { background: #5a2008; }
+.btn-next  { background: #4a7a3a; color: white; }
 .btn-next:hover { background: #3a6030; }
-.secondary-row { display: flex; gap: 8px; }
-.small-action-btn {
-  flex: 1; font-family: var(--font-body); font-weight: 700; font-size: 12px;
-  padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer;
-  transition: all 0.15s; letter-spacing: 0.04em; text-transform: uppercase;
-  box-shadow: 0 2px 0 rgba(0,0,0,0.25);
+.btn-reset {
+  background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7);
+  font-family: var(--fb); font-size: var(--sz-xs); font-weight: 700;
+  padding: 7px 12px; border-radius: 8px; border: none; cursor: pointer;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.25); transition: all 0.15s;
 }
-.small-action-btn:active { transform: translateY(1px); box-shadow: none; }
-.btn-reset { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.8); }
-.btn-reset:hover { background: rgba(255,255,255,0.25); }
+.btn-reset:hover { background: rgba(255,255,255,0.2); }
 
-/* host-only sections hidden for participants */
+/* host-only hidden for participants */
 .host-only { display: none; }
 body.host .host-only { display: flex; }
 
-/* ── RIGHT PANEL ──────────────────────────────── */
+/* ══════════════════════════════════════════════
+   RIGHT PANEL
+══════════════════════════════════════════════ */
 .right-panel {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  padding: 14px 16px 12px;
-  gap: 12px;
-  overflow: hidden;
+  display: flex; flex-direction: column;
+  padding: 12px 14px 10px; gap: 10px; min-height: 0; overflow: hidden;
 }
 
-/* ── HOST DATA ENTRY CARD ─────────────────────── */
+/* ══════════════════════════════════════════════
+   HOST DATA CARD
+══════════════════════════════════════════════ */
 .host-data-card {
   display: none;
-  background: white;
+  background: rgba(255,255,255,0.82);
   border: 2px solid var(--border);
   border-radius: 14px;
-  padding: 12px 14px 10px;
-  flex-direction: column;
-  gap: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 10px 12px 9px;
+  flex-direction: column; gap: 8px;
+  box-shadow: 0 2px 12px rgba(100,60,10,0.1);
   flex-shrink: 0;
 }
 body.host .host-data-card { display: flex; }
 
 .card-title {
-  font-family: var(--font-display);
-  font-size: 13px;
-  color: var(--brown);
-  letter-spacing: 0.06em;
-  display: flex; align-items: center; gap: 6px;
+  font-family: var(--fd); font-size: var(--sz-sm);
+  color: var(--brown); letter-spacing: 0.05em;
 }
 
-/* writer grid */
-.writer-grid { overflow-x: auto; padding-bottom: 4px; }
-.writer-grid::-webkit-scrollbar { height: 4px; }
-.writer-grid::-webkit-scrollbar-track { background: transparent; }
+/* ── Writer grid ── */
+.writer-grid { overflow-x: auto; }
+.writer-grid::-webkit-scrollbar { height: 3px; }
 .writer-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-.grid-header, .host-writer-row {
-  display: flex; align-items: center; gap: 8px; min-width: max-content;
-}
-.grid-header {
-  padding-bottom: 6px; margin-bottom: 4px;
-  border-bottom: 1.5px solid var(--tan);
-}
-.col-icon  { width: 28px; flex-shrink: 0; }
-.col-name  { width: 80px; flex-shrink: 0; font-size: 10px; font-weight: 700;
-              text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
-.sprint-col { display: flex; flex-direction: column; align-items: center; gap: 2px; flex-shrink: 0; }
-.sprint-col-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
-.sprint-col-sub { display: flex; gap: 4px; }
-.sprint-col-sub span { width: 58px; font-size: 9px; color: var(--muted); text-align: center; }
+/* Grid uses a CSS grid so columns are perfectly aligned */
+.wg-table { display: grid; gap: 0; min-width: max-content; }
 
-.host-writer-row { margin-bottom: 5px; }
-.icon-sm { font-size: 18px; width: 28px; text-align: center; flex-shrink: 0; }
-.writer-name-cell { width: 80px; flex-shrink: 0; font-size: 12px; font-weight: 700; color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* header row */
+.wg-header {
+  display: contents; /* each child placed into grid */
+}
+.wg-h-icon, .wg-h-name { /* spacer cells */
+  padding-bottom: 4px; border-bottom: 1.5px solid var(--tan);
+}
+.wg-h-sprint {
+  display: flex; flex-direction: column; align-items: center; gap: 1px;
+  padding: 0 4px 4px; border-bottom: 1.5px solid var(--tan);
+}
+.wg-h-sprint-name {
+  font-family: var(--fb); font-size: var(--sz-xs); font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+.wg-h-sprint-subs {
+  display: flex; gap: 4px;
+}
+.wg-h-sub {
+  font-family: var(--fb); font-size: 10px; color: var(--muted);
+  text-align: center; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+}
 
-.wc-pair { display: flex; gap: 4px; flex-shrink: 0; }
+/* data rows */
+.wg-row { display: contents; }
+.wg-cell {
+  display: flex; align-items: center;
+  padding: 4px 0; border-bottom: 1px solid rgba(200,170,100,0.2);
+}
+.wg-cell-icon { justify-content: center; }
+.wg-cell-name {
+  font-family: var(--fb); font-size: var(--sz-sm); font-weight: 700;
+  color: var(--dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  padding-right: 8px;
+}
+.wg-cell-pair { display: flex; gap: 4px; padding: 0 4px; justify-content: center; }
+.wg-cell-remove { justify-content: center; }
+
 .wc-in {
-  width: 88px; padding: 5px 6px; border-radius: 6px; text-align: center;
-  font-family: var(--font-body); font-size: 13px; font-weight: 600;
-  color: var(--dark); outline: none; transition: border-color 0.15s;
+  width: 76px; /* wide enough for 6 digits comfortably */
+  padding: 5px 6px; border-radius: 7px; text-align: center;
+  font-family: var(--fb); font-size: var(--sz-sm); font-weight: 600;
+  color: var(--dark); outline: none; transition: border-color 0.15s, box-shadow 0.15s;
 }
-.wc-in.start-in { border: 1.5px solid #d0c0a0; background: #fdf8f0; }
-.wc-in.end-in   { border: 1.5px solid var(--orange); background: #fff5ee; }
-.wc-in:focus    { border-color: var(--gold) !important; box-shadow: 0 0 0 2px rgba(201,146,10,0.2); }
+.wc-in.start-in { border: 1.5px solid #cdc0a8; background: #faf6ee; }
+.wc-in.end-in   { border: 1.5px solid #c4743a; background: #fff5ed; }
+.wc-in:focus    { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(201,146,10,0.18); }
 
 .remove-btn {
-  background: none; border: none; color: #cc4444; font-size: 14px;
-  cursor: pointer; padding: 0 3px; line-height: 1; flex-shrink: 0; opacity: 0.6;
+  background: none; border: none; color: #cc4444; font-size: var(--sz-sm);
+  cursor: pointer; padding: 0 4px; line-height: 1; opacity: 0.5;
 }
 .remove-btn:hover { opacity: 1; }
 
-/* host action strip */
-.host-action-strip { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding-top: 6px; border-top: 1px solid var(--tan); }
+/* ── Action strip ── */
+.host-action-strip {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding-top: 7px; border-top: 1.5px solid var(--tan);
+}
 .pill-btn {
-  font-family: var(--font-body); font-weight: 700; font-size: 12px;
-  padding: 7px 14px; border-radius: 20px; border: none; cursor: pointer;
-  letter-spacing: 0.04em; transition: all 0.15s;
+  font-family: var(--fb); font-weight: 700; font-size: var(--sz-xs);
+  padding: 6px 14px; border-radius: 20px; border: none; cursor: pointer;
+  letter-spacing: 0.05em; transition: all 0.15s;
 }
 .pill-update { background: var(--rust); color: white; }
-.pill-update:hover { background: #6b2a08; }
+.pill-update:hover { background: #6a2808; }
 .pill-sprint { background: var(--teal); color: white; }
 .pill-sprint:hover { background: #1e5050; }
 
-/* add writer */
-.add-writer-strip { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-.add-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+/* ── Add writer ── */
+.add-writer-strip {
+  display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
+  margin-left: auto;
+}
+.add-label {
+  font-family: var(--fb); font-size: var(--sz-xs); font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+}
+/* Bigger emoji select */
 .add-icon-sel {
-  border: 1.5px solid var(--border); border-radius: 6px; background: white;
-  padding: 4px 6px; font-size: 16px; cursor: pointer; outline: none;
+  border: 1.5px solid var(--border); border-radius: 8px; background: white;
+  padding: 3px 6px; font-size: 22px; cursor: pointer; outline: none;
+  line-height: 1.3; height: 36px;
 }
 .add-name-in {
-  border: 1.5px solid var(--border); border-radius: 6px; background: white;
-  padding: 5px 10px; font-family: var(--font-body); font-size: 13px; color: var(--dark);
-  width: 110px; outline: none;
+  border: 1.5px solid var(--border); border-radius: 8px; background: white;
+  padding: 5px 10px; font-family: var(--fb); font-size: var(--sz-sm);
+  color: var(--dark); width: 100px; outline: none;
 }
 .add-name-in:focus { border-color: var(--orange); }
 .add-writer-btn {
-  background: var(--orange); color: white; border: none; border-radius: 6px;
-  padding: 6px 14px; font-family: var(--font-body); font-weight: 700;
-  font-size: 12px; cursor: pointer; letter-spacing: 0.04em;
+  background: var(--orange); color: white; border: none; border-radius: 8px;
+  padding: 6px 14px; font-family: var(--fb); font-weight: 700;
+  font-size: var(--sz-xs); cursor: pointer; letter-spacing: 0.05em;
 }
 .add-writer-btn:hover { background: var(--orange2); }
 
-/* ── LEADERBOARD CARD ─────────────────────────── */
+/* ══════════════════════════════════════════════
+   LEADERBOARD
+══════════════════════════════════════════════ */
 .leaderboard-card {
-  background: white;
+  background: rgba(255,255,255,0.82);
   border: 2px solid var(--border);
   border-radius: 14px;
-  padding: 12px 16px 12px;
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 10px 14px 12px;
+  flex: 1; min-height: 0;
+  display: flex; flex-direction: column; gap: 8px;
+  box-shadow: 0 2px 12px rgba(100,60,10,0.1);
   overflow: hidden;
 }
 .lb-header {
-  display: flex; justify-content: space-between; align-items: baseline;
-  flex-shrink: 0;
+  display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
 }
-.lb-title { font-family: var(--font-display); font-size: 17px; color: var(--dark); }
-.lb-subtitle { font-size: 10px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
+.lb-title { font-family: var(--fd); font-size: var(--sz-xl); color: var(--dark); }
+.lb-subtitle {
+  font-family: var(--fb); font-size: var(--sz-xs); font-weight: 700;
+  color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase;
+  background: var(--tan); padding: 3px 10px; border-radius: 20px;
+}
 
-.lb-rows { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
-.lb-rows::-webkit-scrollbar { width: 4px; }
+.lb-rows {
+  flex: 1; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 7px;
+}
+.lb-rows::-webkit-scrollbar { width: 3px; }
 .lb-rows::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
 .lb-row { display: flex; align-items: center; gap: 10px; }
-.lb-icon { font-size: 24px; width: 30px; text-align: center; flex-shrink: 0; }
-.lb-name { font-weight: 700; font-size: 13px; min-width: 70px; flex-shrink: 0; }
+.lb-rank {
+  font-family: var(--fd); font-size: var(--sz-lg); min-width: 28px;
+  text-align: center; flex-shrink: 0;
+}
+.lb-icon { font-size: 22px; width: 28px; text-align: center; flex-shrink: 0; }
+.lb-name { font-family: var(--fb); font-weight: 700; font-size: var(--sz-sm); min-width: 64px; flex-shrink: 0; }
 .lb-bar-wrap {
-  flex: 1; height: 24px; background: var(--parchment);
-  border-radius: 6px; overflow: hidden; display: flex;
+  flex: 1; height: 22px; background: var(--parchment);
+  border-radius: 5px; overflow: hidden; display: flex;
   border: 1px solid var(--tan);
 }
-.lb-segment { height: 100%; transition: width 0.7s cubic-bezier(.34,1,.64,1); min-width: 0; }
-.lb-segment:first-child { border-radius: 5px 0 0 5px; }
-.lb-segment:last-child:not(:first-child) { border-radius: 0 5px 5px 0; }
-.lb-segment:only-child { border-radius: 5px; }
-.lb-total { font-weight: 700; font-size: 15px; min-width: 54px; text-align: right; flex-shrink: 0; color: var(--brown); font-family: var(--font-serif); }
-.lb-badge { font-size: 16px; min-width: 22px; flex-shrink: 0; text-align: center; }
+.lb-segment {
+  height: 100%; transition: width 0.7s cubic-bezier(.34,1,.64,1); min-width: 0;
+}
+.lb-segment:first-child  { border-radius: 4px 0 0 4px; }
+.lb-segment:last-child:not(:first-child) { border-radius: 0 4px 4px 0; }
+.lb-segment:only-child   { border-radius: 4px; }
+.lb-total {
+  font-family: var(--fb); font-weight: 700; font-size: var(--sz-md);
+  min-width: 58px; text-align: right; flex-shrink: 0; color: var(--brown);
+}
+.lb-badge { font-size: var(--sz-lg); min-width: 24px; text-align: center; flex-shrink: 0; }
 
-.lb-empty { font-family: var(--font-serif); font-style: italic; font-size: 13px; color: var(--muted); text-align: center; padding: 16px 0; }
+.lb-empty {
+  font-family: var(--fb); font-style: italic; font-size: var(--sz-sm);
+  color: var(--muted); text-align: center; padding: 18px 0;
+}
 
-/* ── CONFETTI & TOAST ─────────────────────────── */
+/* ══════════════════════════════════════════════
+   CONFETTI & TOAST
+══════════════════════════════════════════════ */
 #confetti-canvas { position: fixed; top:0; left:0; pointer-events:none; z-index:9999; }
 .toast {
-  position: fixed; bottom: 20px; left: 50%;
+  position: fixed; bottom: 18px; left: 50%;
   transform: translateX(-50%) translateY(70px);
   background: var(--dark); color: var(--cream);
-  padding: 10px 22px; border-radius: 30px;
-  font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+  padding: 9px 20px; border-radius: 30px;
+  font-family: var(--fb); font-size: var(--sz-sm); font-weight: 700; letter-spacing: 0.06em;
   transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
   z-index: 1000; white-space: nowrap;
 }
 .toast.show { transform: translateX(-50%) translateY(0); }
-
-/* ── BOTTOM FULL-WIDTH (leaderboard span) ─────── */
-.bottom-row {
-  grid-column: 1 / -1;
-  border-top: 3px solid var(--green2);
-  background: var(--cream);
-  padding: 12px 16px;
-  display: flex;
-  gap: 16px;
-  min-height: 0;
-  max-height: 220px;
-}
-
-/* Participant view: left panel shows timer only, right shows leaderboard only */
-/* We just hide host-only stuff via CSS */
 </style>
 </head>
 <body>
@@ -411,30 +421,29 @@ body.host .host-data-card { display: flex; }
 <canvas id="confetti-canvas"></canvas>
 <div class="toast" id="toast"></div>
 
-<!-- ── HEADER ─────────────────────────────────── -->
+<!-- HEADER -->
 <header>
-  <div class="header-left">
+  <div class="header-icon">📖</div>
+  <div class="header-text">
     <span class="header-studio">Rasa Writing Studio presents</span>
-    <h1 class="header-title">COMMUNITY WRITE-INS</h1>
-    <span class="header-tagline">Every word counts.</span>
+    <span class="header-title">VIRTUAL COMMUNITY WRITE-INS</span>
+    <span class="header-sub">Every word counts.</span>
   </div>
   <span class="host-badge">HOST</span>
 </header>
 
-<!-- ── BODY GRID ──────────────────────────────── -->
+<!-- BODY -->
 <div class="body-grid">
 
-  <!-- ════ LEFT: TIMER PANEL ════ -->
+  <!-- ═══ LEFT: TIMER ═══ -->
   <div class="left-panel">
-    <!-- Timer box -->
     <div class="timer-box">
       <div class="sprint-label" id="sprint-label">Welcome to Sprints</div>
       <div class="timer-display" id="timer-display">20:00</div>
       <div class="timer-status" id="timer-status">Waiting to begin…</div>
     </div>
 
-    <!-- Duration pills — host only -->
-    <div class="duration-row host-only" id="duration-row" style="flex-wrap:wrap;">
+    <div class="duration-row host-only" id="duration-row">
       <button class="duration-btn" onclick="setDuration(15)">15 min</button>
       <button class="duration-btn active" onclick="setDuration(20)">20 min</button>
       <button class="duration-btn" onclick="setDuration(25)">25 min</button>
@@ -442,30 +451,25 @@ body.host .host-data-card { display: flex; }
       <button class="duration-btn" onclick="setDuration(40)">40 min</button>
     </div>
 
-    <!-- Action buttons — host only -->
-    <div class="action-row host-only" style="flex-direction:column;">
+    <div class="action-stack host-only" style="flex-direction:column;">
       <button class="big-btn btn-start" id="btn-start" onclick="hostStart()">▶ Start Sprint</button>
       <button class="big-btn btn-end"   id="btn-end"   onclick="hostEnd()"  style="display:none">⏹ End Sprint</button>
       <button class="big-btn btn-next"  id="btn-next"  onclick="hostNext()" style="display:none">→ Next Sprint</button>
-      <div class="secondary-row">
-        <button class="small-action-btn btn-reset" id="btn-reset" onclick="hostReset()" style="display:none">↺ Reset All</button>
-      </div>
+      <button class="btn-reset"         id="btn-reset" onclick="hostReset()" style="display:none">↺ Reset All</button>
     </div>
   </div>
 
-  <!-- ════ RIGHT: DATA + LEADERBOARD ════ -->
+  <!-- ═══ RIGHT: DATA + LEADERBOARD ═══ -->
   <div class="right-panel">
 
-    <!-- HOST: Writers & Word Counts -->
+    <!-- Host data entry card -->
     <div class="host-data-card">
       <div class="card-title">📋 Writers &amp; Word Counts</div>
-
       <div class="writer-grid" id="writer-grid"></div>
-
       <div class="host-action-strip">
         <button class="pill-btn pill-update" onclick="updateLeaderboard()">Update Leaderboard</button>
         <button class="pill-btn pill-sprint" onclick="addSprint()">+ Add Sprint</button>
-        <div class="add-writer-strip" style="margin-left:auto;">
+        <div class="add-writer-strip">
           <span class="add-label">Add:</span>
           <select id="add-icon-select" class="add-icon-sel"></select>
           <input type="text" class="add-name-in" id="add-name" placeholder="Name"/>
@@ -474,7 +478,7 @@ body.host .host-data-card { display: flex; }
       </div>
     </div>
 
-    <!-- Leaderboard — visible to everyone -->
+    <!-- Leaderboard -->
     <div class="leaderboard-card">
       <div class="lb-header">
         <span class="lb-title">🏆 Leaderboard</span>
@@ -486,14 +490,11 @@ body.host .host-data-card { display: flex; }
     </div>
 
   </div>
-  <!-- /right-panel -->
-
-</div><!-- /body-grid -->
+</div>
 
 <script>
-// ── STATE ──────────────────────────────────────────────────────────────
 const ICONS = ['🦔','🐺','🦡','🦝','🐰','🦊','🐻','🦌','🐿️','🦦'];
-const SPRINT_COLORS = ['#d4621a','#8b3a0f','#c9920a','#3d6b38','#2e6e6e','#7a3d6e','#3d5e7a'];
+const SPRINT_COLORS = ['#d4621a','#8b3a0f','#c9920a','#3a6435','#2e6e6e','#7a3d6e','#3d5e7a'];
 const MEDALS = ['🥇','🥈','🥉'];
 
 let state = {
@@ -506,9 +507,8 @@ let state = {
   writers: [],
 };
 
-// Show host view by default; participants use ?participant=true to hide controls
-const isParticipant = new URLSearchParams(location.search).has('participant');
-const isHost = !isParticipant;
+// Default to host; append ?participant=true for participant view
+const isHost = !new URLSearchParams(location.search).has('participant');
 if (isHost) document.body.classList.add('host');
 
 window.onload = () => {
@@ -518,44 +518,79 @@ window.onload = () => {
   setTimerDisplay(state.duration * 60);
 };
 
-// ── ICONS ──────────────────────────────────────────────────────────────
+// ── ICON SELECT ────────────────────────────────────────────────────────
 function renderIconSelect() {
   const sel = document.getElementById('add-icon-select');
   sel.innerHTML = ICONS.map(i => `<option value="${i}">${i}</option>`).join('');
 }
 
 // ── WRITER GRID ────────────────────────────────────────────────────────
+// Grid uses CSS grid with explicit column template so headers & inputs align perfectly
 function renderWriterGrid() {
-  const grid = document.getElementById('writer-grid');
-  grid.innerHTML = '';
+  const container = document.getElementById('writer-grid');
+  container.innerHTML = '';
 
   if (state.writers.length === 0) {
-    grid.innerHTML = '<p style="font-size:12px;color:var(--muted);font-style:italic">No writers yet — add one below.</p>';
+    container.innerHTML = '<p style="font-size:12px;color:var(--muted);font-style:italic;padding:2px 0">No writers yet — add one below.</p>';
     return;
   }
 
-  // Header
-  const hdr = document.createElement('div');
-  hdr.className = 'grid-header';
-  let hHTML = `<div class="col-icon"></div><div class="col-name">Writer</div>`;
-  for (let s = 1; s <= state.numSprintCols; s++) {
-    hHTML += `<div class="sprint-col">
-      <div class="sprint-col-label" style="color:${SPRINT_COLORS[s-1]||'#666'}">Sprint ${s}</div>
-      <div class="sprint-col-sub"><span>Start</span><span>End</span></div>
-    </div>`;
-  }
-  hdr.innerHTML = hHTML;
-  grid.appendChild(hdr);
+  // Build column template: [icon 28px] [name 90px] [pair*N] [remove 28px]
+  // Each pair = 2 inputs of 76px + 4px gap = 156px + 8px padding = ~168px
+  const pairWidth = 168; // px per sprint column
+  const cols = `28px 90px repeat(${state.numSprintCols}, ${pairWidth}px) 28px`;
 
-  // Writer rows
+  const table = document.createElement('div');
+  table.className = 'wg-table';
+  table.style.gridTemplateColumns = cols;
+
+  // ── Header ──
+  // Spacer for icon + name columns
+  const hIcon = document.createElement('div');
+  hIcon.className = 'wg-h-icon wg-h-name';
+  const hName = document.createElement('div');
+  hName.className = 'wg-h-name';
+  table.appendChild(hIcon);
+  table.appendChild(hName);
+
+  for (let s = 1; s <= state.numSprintCols; s++) {
+    const col = document.createElement('div');
+    col.className = 'wg-h-sprint';
+    col.innerHTML = `
+      <div class="wg-h-sprint-name" style="color:${SPRINT_COLORS[s-1]||'#888'}">Sprint ${s}</div>
+      <div class="wg-h-sprint-subs">
+        <div class="wg-h-sub" style="width:76px">Start</div>
+        <div class="wg-h-sub" style="width:76px">End</div>
+      </div>`;
+    table.appendChild(col);
+  }
+  // spacer for remove button
+  const hRemove = document.createElement('div');
+  hRemove.className = 'wg-h-name';
+  hRemove.style.borderBottom = '1.5px solid var(--tan)';
+  table.appendChild(hRemove);
+
+  // ── Rows ──
   state.writers.forEach((w, wi) => {
-    const row = document.createElement('div');
-    row.className = 'host-writer-row';
-    let cells = `<span class="icon-sm">${w.icon}</span>
-                 <span class="writer-name-cell" title="${w.name}">${w.name}</span>`;
+    // icon cell
+    const iconCell = document.createElement('div');
+    iconCell.className = 'wg-cell wg-cell-icon';
+    iconCell.innerHTML = `<span style="font-size:18px">${w.icon}</span>`;
+    table.appendChild(iconCell);
+
+    // name cell
+    const nameCell = document.createElement('div');
+    nameCell.className = 'wg-cell wg-cell-name';
+    nameCell.textContent = w.name;
+    nameCell.title = w.name;
+    table.appendChild(nameCell);
+
+    // sprint pair cells
     for (let s = 0; s < state.numSprintCols; s++) {
       const sp = w.sprints[s] || {};
-      cells += `<div class="wc-pair">
+      const pairCell = document.createElement('div');
+      pairCell.className = 'wg-cell wg-cell-pair';
+      pairCell.innerHTML = `
         <input class="wc-in start-in" type="number" placeholder="—"
           value="${sp.start != null ? sp.start : ''}"
           onchange="hostUpdateCount(${wi},${s},'start',this.value)"
@@ -563,13 +598,18 @@ function renderWriterGrid() {
         <input class="wc-in end-in" type="number" placeholder="—"
           value="${sp.end != null ? sp.end : ''}"
           onchange="hostUpdateCount(${wi},${s},'end',this.value)"
-          title="Sprint ${s+1} end"/>
-      </div>`;
+          title="Sprint ${s+1} end"/>`;
+      table.appendChild(pairCell);
     }
-    cells += `<button class="remove-btn" onclick="removeWriter(${wi})" title="Remove">✕</button>`;
-    row.innerHTML = cells;
-    grid.appendChild(row);
+
+    // remove button cell
+    const removeCell = document.createElement('div');
+    removeCell.className = 'wg-cell wg-cell-remove';
+    removeCell.innerHTML = `<button class="remove-btn" onclick="removeWriter(${wi})" title="Remove">✕</button>`;
+    table.appendChild(removeCell);
   });
+
+  container.appendChild(table);
 }
 
 function hostUpdateCount(wi, si, field, val) {
@@ -595,6 +635,16 @@ function removeWriter(wi) {
 }
 
 function addSprint() {
+  // Auto-fill start of new sprint = end of previous sprint for each writer
+  const newCol = state.numSprintCols; // 0-indexed new column index
+  state.writers.forEach(w => {
+    while (w.sprints.length <= newCol) w.sprints.push({});
+    const prevEnd = newCol > 0 ? (w.sprints[newCol - 1]?.end ?? null) : null;
+    // Only pre-fill if not already set and previous end exists
+    if (w.sprints[newCol].start == null && prevEnd !== null) {
+      w.sprints[newCol].start = prevEnd;
+    }
+  });
   state.numSprintCols++;
   renderWriterGrid();
   const grid = document.getElementById('writer-grid');
@@ -621,14 +671,12 @@ function hostStart() {
   state.currentSprint++;
   state.timerRunning = true;
   state.timerEnd = Date.now() + state.duration * 60 * 1000;
-
   document.getElementById('sprint-label').textContent = `Sprint #${state.currentSprint}`;
   document.getElementById('timer-status').textContent = `Sprint #${state.currentSprint} is live — write!`;
   show('btn-start', false); show('btn-end', true);
-  document.getElementById('duration-row').style.opacity = '0.35';
+  document.getElementById('duration-row').style.opacity = '0.3';
   document.getElementById('duration-row').style.pointerEvents = 'none';
   playChime('start');
-
   state.timerInterval = setInterval(() => {
     const left = Math.max(0, Math.round((state.timerEnd - Date.now()) / 1000));
     setTimerDisplay(left);
@@ -646,7 +694,7 @@ function hostEnd() {
   clearInterval(state.timerInterval);
   state.timerRunning = false;
   setTimerDisplay(0);
-  document.getElementById('timer-status').textContent = `Sprint #${state.currentSprint} ended. Collect word counts.`;
+  document.getElementById('timer-status').textContent = `Sprint #${state.currentSprint} ended. Collect counts.`;
   show('btn-end', false); show('btn-next', true); show('btn-reset', true);
   playChime('end');
 }
@@ -703,12 +751,10 @@ function renderLeaderboard() {
     ? `${state.numSprintCols} Sprint${state.numSprintCols !== 1 ? 's' : ''}`
     : 'No sprints yet';
 
-  // remove old rows (keep empty p)
   [...container.querySelectorAll('.lb-row')].forEach(r => r.remove());
   if (!hasData) return;
 
   const maxTotal = ranked[0]?.total || 1;
-
   ranked.forEach((w, i) => {
     if (w.total === 0) return;
     const row = document.createElement('div');
@@ -719,11 +765,11 @@ function renderLeaderboard() {
         title="Sprint ${si+1}: +${t.toLocaleString()} words"></div>`;
     }).join('');
     row.innerHTML = `
+      <div class="lb-rank">${MEDALS[i] || (i+1)}</div>
       <div class="lb-icon">${w.icon}</div>
       <div class="lb-name">${w.name}</div>
       <div class="lb-bar-wrap">${segs}</div>
-      <div class="lb-total">${w.total.toLocaleString()}</div>
-      <div class="lb-badge">${MEDALS[i] || ''}</div>`;
+      <div class="lb-total">+${w.total.toLocaleString()}</div>`;
     container.appendChild(row);
   });
 }
@@ -754,9 +800,9 @@ function fireConfetti() {
   const ctx = canvas.getContext('2d');
   const colors = ['#d4621a','#f5d57a','#c9920a','#8bbd5a','#4a9ee0','#fdf4e0','#8b3a0f'];
   let parts = Array.from({length:150}, () => ({
-    x: Math.random()*canvas.width, y:-20,
-    w: Math.random()*12+4, h: Math.random()*6+3,
-    color: colors[Math.floor(Math.random()*colors.length)],
+    x:Math.random()*canvas.width, y:-20,
+    w:Math.random()*12+4, h:Math.random()*6+3,
+    color:colors[Math.floor(Math.random()*colors.length)],
     vx:(Math.random()-.5)*4, vy:Math.random()*4+2,
     angle:Math.random()*Math.PI*2, spin:(Math.random()-.5)*.15, opacity:1
   }));
